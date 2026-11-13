@@ -7,17 +7,17 @@ echo  D Y PATIL MEDICAL COLLEGE - AI OSCE CATHETERIZATION WEB SUITE
 echo ===========================================================================
 echo [*] Starting local edge AI web server at http://127.0.0.1:8000 ...
 echo [*] Features:
-echo     - Option A: Live Video Assessment (Webcam / Simulated stream)
-echo     - Option B: Upload Video & Automated Slicing
-echo     - Live Procedural Checklist & Dwell Timer Updates
-echo     - Verifiable Step Video Clips Gallery
-echo     - Human-in-the-Loop Editable Rubric & Active Continuous Learning
+echo     - One-click assessment of clinical videos
+echo     - Interactive 13-step OSCE Checklist with timestamps & confidence
+echo     - Native HTML5 video player with step jump seeking
+echo     - Procedural sequence & critical safety audits
+echo     - Downloadable official scorecards & JSON reports
 echo ===========================================================================
 
 cd /d "C:\Medical"
 
 start "" http://127.0.0.1:8000
 
-".venv\Scripts\python.exe" -m catheter_ai_project.src.web_app
+"C:\Users\Moin\AppData\Local\Programs\Python\Python312\python.exe" web_app.py
 
 pause
