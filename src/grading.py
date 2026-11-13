@@ -60,7 +60,7 @@ class OSCEGrader:
                     "step_id": s,
                     "label": lbl,
                     "status": status_str,
-                    "passed": True,
+                    "passed": not is_prompted,
                     "start_sec": seg["start_sec"] if seg else None,
                     "end_sec": seg["end_sec"] if seg else None,
                     "duration_sec": seg["duration_sec"] if seg else None,

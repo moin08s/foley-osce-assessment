@@ -1,7 +1,7 @@
 # D Y Patil Medical College - OSCE Procedural Assessment
 ## Male Foley Catheterization Skill Examination
 **Candidate ID:** Candidate_024 (Session 024)  
-**Evaluation Date:** 2026-11-13 19:07:04  
+**Evaluation Date:** 2026-11-13 23:16:52  
 **Institutional Standard:** Objective Structured Clinical Examination (OSCE) 13-Step Protocol  
 
 ---
@@ -11,7 +11,7 @@
 - **Teacher (Faculty) Grade:** `P-1`
 - **Faculty Alignment Status:** `[OK] 100% AGREEMENT (0 MISTAKES)`
 - **Grade Classification:** Pass with 1 Prompt (Beginner) - One minor verbal prompt required, zero safety compromise
-- **Procedural Score:** 13/13 (100.0%)
+- **Procedural Score:** 12/13 (92.3%)
 
 ---
 

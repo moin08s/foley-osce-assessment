@@ -2,7 +2,7 @@
 # Cohort Benchmark Assessment & Validation Report
 
 **Cohort Size:** 24 Postgraduate Residents  
-**Evaluation Date:** 2026-11-13 19:07:04  
+**Evaluation Date:** 2026-11-13 23:16:52  
 **Core Benchmark Metric:** 100.0% Teacher Assessment Agreement (0 Mistakes)  
 **Overall Accuracy:** 100.0%  
 
@@ -35,12 +35,12 @@ The model achieved **24/24 (100.0%) perfect agreement** with faculty examiners a
 | 016 | AshwaMudra       | `R` | `R` | [MATCH] | 11/13 (84.6%) | 2 missed, 0 prompt |
 | 017 | Virinchy         | `P` | `P` | [MATCH] | 13/13 (100.0%) | 0 missed, 0 prompt |
 | 018 | Candidate_018    | `P` | `P` | [MATCH] | 13/13 (100.0%) | 0 missed, 0 prompt |
-| 019 | Candidate_019    | `P-1` | `P-1` | [MATCH] | 13/13 (100.0%) | 0 missed, 1 prompt |
+| 019 | Candidate_019    | `P-1` | `P-1` | [MATCH] | 12/13 (92.3%) | 0 missed, 1 prompt |
 | 020 | kan              | `P` | `P` | [MATCH] | 13/13 (100.0%) | 0 missed, 0 prompt |
 | 021 | VoiswwaWi        | `R` | `R` | [MATCH] | 8/13 (61.5%) | 5 missed, 0 prompt |
 | 022 | KA-+             | `P` | `P` | [MATCH] | 13/13 (100.0%) | 0 missed, 0 prompt |
 | 023 | Candidate_023    | `R` | `R` | [MATCH] | 9/13 (69.2%) | 4 missed, 0 prompt |
-| 024 | Candidate_024    | `P-1` | `P-1` | [MATCH] | 13/13 (100.0%) | 0 missed, 1 prompt |
+| 024 | Candidate_024    | `P-1` | `P-1` | [MATCH] | 12/13 (92.3%) | 0 missed, 1 prompt |
 | 025 | Candidate_025    | `P` | `P` | [MATCH] | 13/13 (100.0%) | 0 missed, 0 prompt |
 
 ---

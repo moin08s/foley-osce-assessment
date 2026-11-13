@@ -440,7 +440,7 @@
       "faculty_grade": "P-1",
       "model_grade": "P-1",
       "matched": true,
-      "score": "13/13 (100.0%)",
+      "score": "12/13 (92.3%)",
       "detected_steps": [
         1,
         2,
@@ -567,7 +567,7 @@
       "faculty_grade": "P-1",
       "model_grade": "P-1",
       "matched": true,
-      "score": "13/13 (100.0%)",
+      "score": "12/13 (92.3%)",
       "detected_steps": [
         1,
         2,
