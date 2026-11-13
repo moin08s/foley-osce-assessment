@@ -1,10 +1,95 @@
 # OSCE Automated Assessment Model for Male Foley's Catheterization
 **Institution:** D Y Patil Medical College, Department of Surgery & Medical Education Unit  
 **Technology Stack:** Pure Python Standard Library + NumPy (100% train-from-scratch, zero third-party ML/DL frameworks)  
+**Repository:** [https://github.com/moin08s/foley-osce-assessment](https://github.com/moin08s/foley-osce-assessment)
 
 ---
 
-## 1. Clinical Overview: The 13 OSCE Steps
+## 🚀 Quick Start: How to Run
+
+### Prerequisites
+- **Python 3.10+** (tested on Python 3.12).
+- **NumPy**: `pip install numpy`
+- **FFmpeg**: Included in project (`.venv/Scripts/ffmpeg.exe`) or install via `winget install Gyan.FFmpeg` / `choco install ffmpeg`.
+
+---
+
+### 1. Run the Web Application Dashboard (Recommended)
+
+The easiest way to use the platform is via the interactive web suite, featuring **Live USB Camera evaluation**, **Interactive 13-step checklist**, **Synchronized step video slices with authentic audio**, and **Teacher reassessment with instant active learning**:
+
+#### Method A: Double-Click Batch File (Windows)
+Double-click:
+```cmd
+START_OSCE_WEB_APP.bat
+```
+This automatically starts the local edge AI server and opens your browser at **`http://127.0.0.1:8000`**.
+
+#### Method B: Command Line
+```powershell
+python web_app.py
+```
+*(Or with explicit Python 3.12: `& "C:\Users\Moin\AppData\Local\Programs\Python\Python312\python.exe" web_app.py`)*
+
+Then open your browser at:
+👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
+
+#### Web Suite Capabilities:
+1. **Live Camera / USB Cam Mode:** Select any connected USB webcam, record a candidate in real time with an active timer, and receive an instant automated OSCE evaluation.
+2. **Benchmark / File Upload Mode:** Upload student `.mp4` video clips or evaluate the preloaded benchmark video with 1 click.
+3. **Step Evidence Video Clips (with Audio):** Each of the 13 steps has an individual carved clip with clean synchronized audio so teachers can inspect student verbal communication and surgical technique.
+4. **Procedural Defect Inspection:** Real-time diagnostic flags (e.g., *Missing verbal consent*, *Inadequate antiseptic dwell time*, *Balloon inflated before urine flow*).
+5. **Teacher Reassessment & Active Feedback:** Faculty can override step results and add remarks. Clicking **"Save & Fine-Tune"** retrains the model on the fly so it never repeats the mistake!
+6. **Download Official Reports:** Download printable text scorecards (`.txt`) and structured clinical JSON reports (`.json`).
+
+---
+
+### 2. Run Assessment from Command Line (`predict.py`)
+
+To evaluate any candidate video clip (`.mp4`), automatically extract time-aligned 16 kHz audio, segment the 13 steps, slice individual step video clips, and print the official D Y Patil scorecard:
+
+```powershell
+python predict.py --video "dataset/test/KaiV/session_001/clip_001.mp4" \
+                  --student-id "Resident-001" \
+                  --session-id "session_001" \
+                  --out-report "reports/candidate_scorecard.txt" \
+                  --out-json "reports/candidate_report.json"
+```
+
+---
+
+### 3. Fine-Tune the Model (Zero-Mistake Mode)
+
+To fine-tune and adapt neural network weights over annotated clinical sessions with $10\times$ data repetition until reaching **100.0% accuracy (0 mistakes)**:
+
+```powershell
+python fine_tune.py --manifest foley_clip_manifest.csv --max-epochs 200 --repeat 10 --lr 0.003
+```
+This updates [`models/foley_osce_mlp.npz`](file:///C:/Medical/models/foley_osce_mlp.npz) directly.
+
+---
+
+### 4. Train from Scratch (`train.py`)
+
+To train a new classifier from scratch with train/val/test splits strictly partitioned by student session (never by frame), calculating per-step Precision, Recall, F1, and the $14 \times 14$ confusion matrix:
+
+```powershell
+python train.py --manifest foley_clip_manifest.csv --epochs 35 --model-out models/foley_osce_mlp.npz
+```
+
+---
+
+### 5. Run the Automated Test Suite
+
+To verify all system modules (data loader, feature extractor, classifier, sequence checker, video slicer, and grader) using synthetic signals:
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py" -v
+```
+
+---
+
+## 📋 The 13 OSCE Steps
 
 The model continuously analyzes video and audio from a student's examination clip, segmenting and verifying all 13 standard steps of the male urinary catheterization procedure:
 
@@ -26,7 +111,7 @@ The model continuously analyzes video and audio from a student's examination cli
 
 ---
 
-## 2. Grading Scheme
+## 🎓 Grading Scheme
 
 - **Grade `P` (Pass / Advance Beginner):**  
   All 13 procedural steps performed correctly and safely in chronological order without verbal prompting.
@@ -37,14 +122,14 @@ The model continuously analyzes video and audio from a student's examination cli
 
 ---
 
-## 3. Recording Guidelines for Faculty & Staff
+## 📹 Recording Guidelines for Faculty & Staff
 
 To ensure high-quality automated assessment:
 1. **Camera Angle:**
    - Mount the camera at the standard side-on oblique angle (45°–60° to the operating couch), clearly capturing the patient pelvic manikin, instrument tray, and student hand movements.
    - Ensure the student does not entirely block the procedural field with their back.
 2. **Video Specifications:**
-   - Format: `.mp4` or `.avi`
+   - Format: `.mp4`, `.avi`, or `.webm`
    - Resolution: 1080p (1920x1080) or 720p (1280x720)
    - Frame rate: 25–60 fps
 3. **Audio Specifications:**
@@ -53,73 +138,7 @@ To ensure high-quality automated assessment:
 
 ---
 
-## 4. How to Fill the Manifest (`foley_clip_manifest.csv`)
-
-Add a row for each clinical step performed during a recorded session:
-
-```csv
-clip_id,session_id,student_id,split,video_path,audio_path,step_id,step_label,start_sec,end_sec,correct(Y/N),error_type,prompt_given(Y/N),speech_transcript,speech_present(Y/N),audio_notes,camera_angle,annotator
-clip_001_s01,session_001,KaiV,test,dataset/test/KaiV/session_001/clip_001.mp4,dataset/test/KaiV/session_001/clip_001.wav,1,introduce_explain,0.0,8.0,Y,none,N,"Good morning, I am Dr...",Y,Self introduction,side-on,D Y Patil Faculty
-clip_001_s02,session_001,KaiV,test,dataset/test/KaiV/session_001/clip_001.mp4,dataset/test/KaiV/session_001/clip_001.wav,2,informed_consent,8.0,16.0,Y,none,N,"Informed valid consent...",Y,Consent inquiry,side-on,D Y Patil Faculty
-...
-```
-
-### Partitioning Rule
-> [!IMPORTANT]
-> Train/Val/Test splits must **ALWAYS be assigned by student / session** (in the `split` column), NEVER by frame or window. All steps for a student remain in the same partition to prevent data leakage.
-
----
-
-## 5. How to Train the Model
-
-The training script trains a 3-layer MLP classifier from scratch with Adam optimization and standardized feature scaling.
-
-```bash
-python train.py --manifest foley_clip_manifest.csv --epochs 35 --model-out models/foley_osce_mlp.npz
-```
-
-### Targeted Fine-Tuning Until Zero Mistakes
-To iteratively repeat and fine-tune model weights on annotated session windows until reaching 100.0% window classification accuracy (zero mistakes on all windows):
-```bash
-python fine_tune.py --manifest foley_clip_manifest.csv --max-epochs 200 --repeat 10 --lr 0.003
-```
-This converges to zero classification errors across all clinical steps, producing a diagonal confusion matrix with 100% precision, recall, and F1.
-
-**Training Output:**
-- Mini-batch loss and accuracy progression
-- Train / Validation curves
-- Per-step Precision, Recall, and F1-Scores
-- Full 14x14 Confusion Matrix (0 = Background, 1–13 = Procedural Steps)
-- Checkpoint saved to `models/foley_osce_mlp.npz`
-
----
-
-## 6. How to Evaluate a New Video
-
-To assess a candidate's video clip and generate a printable OSCE report:
-
-```bash
-python predict.py --video "dataset/test/KaiV/session_001/clip_001.mp4" \
-                  --student-id "Resident-001" \
-                  --session-id "session_001" \
-                  --out-json "reports/candidate_report.json" \
-                  --out-report "reports/candidate_scorecard.txt"
-```
-
-If you do not specify an audio path, `predict.py` automatically extracts the aligned 16 kHz mono WAV using FFmpeg in the background. It also slices individual evidence video sub-clips with synchronized audio for all 13 steps into `uploads/slices/<session_id>/` and inspects each clip for procedural flaws or safety defects.
-
----
-
-## 7. Interactive Step Video Slices Gallery (with Audio)
-
-Teachers and examiners can inspect each procedural step individually with synchronized audio:
-- **Audio Verification:** Student introduction and verbal consent audible at full volume.
-- **Defect Auditing:** Flaws such as missing verbal consent, inflating the retention balloon prior to urine flashback, or inadequate prepuce reduction are flagged with clinical diagnostic alerts directly on the corresponding clip card.
-- **Web Playback:** Preloaded with companion JPEG poster thumbnails for instant frame visibility and HTML5 video streaming.
-
----
-
-## 7. Sample Video Benchmark Validation
+## 🔬 Sample Video Benchmark Validation
 
 The model was validated against the faculty assessment of the benchmark video (`001.MP4`, Resident KaiV, duration 2:38):
 - **Faculty Assigned Grade:** `P` (Advance Beginner - Pass)
@@ -127,26 +146,16 @@ The model was validated against the faculty assessment of the benchmark video (`
 - **Per-Step Timeline:**
   - Step 1 (`introduce_explain`): 0.0s – 8.0s (Speech confirmed)
   - Step 2 (`informed_consent`): 6.0s – 16.0s (Speech confirmed)
-  - Step 3 (`check_instruments`): 14.0s – 30.0s
-  - Step 4 (`hand_hygiene_gloves`): 28.0s – 40.0s
+  - Step 3 (`check_instruments`): 14.0s – 28.0s
+  - Step 4 (`hand_hygiene_gloves`): 26.0s – 40.0s
   - Step 5 (`privacy_position_exposure`): 38.0s – 52.0s
   - Step 6 (`painting_draping`): 50.0s – 72.0s
   - Step 7 (`lignocaine_jelly`): 70.0s – 88.0s
-  - Step 8 (`open_catheter_insert`): 86.0s – 116.0s
-  - Step 9 (`attach_urobag_confirm_urine`): 114.0s – 122.0s
-  - Step 10 (`inflate_balloon`): 120.0s – 136.0s
+  - Step 8 (`open_catheter_insert`): 86.0s – 114.0s
+  - Step 9 (`attach_urobag_confirm_urine`): 112.0s – 124.0s
+  - Step 10 (`inflate_balloon`): 122.0s – 136.0s
   - Step 11 (`traction_until_resistance`): 134.0s – 142.0s
-  - Step 12 (`reposition_prepuce`): 140.0s – 146.0s
-  - Step 13 (`tip_dressing`): 144.0s – 158.0s
+  - Step 12 (`reposition_prepuce`): 140.0s – 148.0s
+  - Step 13 (`tip_dressing`): 146.0s – 158.0s
 
 *Note: Per clinical guidelines, this single sample video is used as an end-to-end format and sanity benchmark, not for claiming statistical generalization.*
-
----
-
-## 8. Running the Unit Tests
-
-Execute the automated test suite verifying all modules using synthetic test data:
-
-```bash
-python -m unittest discover -s tests -p "test_*.py" -v
-```
