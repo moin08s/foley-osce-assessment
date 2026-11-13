@@ -1,4 +1,4 @@
-"""Live USB Camera & Teacher Adjudication Web Suite for Foley OSCE Assessment.
+"""Live USB Camera, Step Video Slices with Audio & Teacher Adjudication Suite.
 
 D Y Patil Medical College - Procedural Skills Assessment Model
 Pure Python Standard Library (http.server) + NumPy.
@@ -8,10 +8,11 @@ Zero external web frameworks required (no FastAPI/Flask).
 Features:
 1. Live Camera & USB Cam selection, real-time preview, and live recording.
 2. Automated multimodal step evaluation from live camera or uploaded video.
-3. Interactive 13-step OSCE Checklist with timestamps, confidence scores, and speech verification.
-4. Native HTML5 video player with interactive step-seeking.
-5. Teacher Review, Remarks & Adjudication panel (Human-in-the-Loop).
-6. Active Continuous Learning / Retraining: Model fine-tunes immediately on teacher corrections
+3. Standalone step video clips with synchronized audio for all 13 OSCE steps.
+4. Procedural flaw & defect inspection panel for each sliced step clip.
+5. Interactive 13-step OSCE Checklist with timestamps, confidence scores, and speech verification.
+6. Teacher Review, Remarks & Adjudication panel (Human-in-the-Loop).
+7. Active Continuous Learning / Retraining: Model fine-tunes immediately on teacher corrections
    so it never repeats the same mistake!
 """
 
@@ -49,6 +50,7 @@ from src.data_loader import (
 from src.features import extract_window_features
 from src.grading import OSCEGrader
 from src.model import FoleyStepClassifier
+from src.video_slicer import slice_session_steps
 
 PORT = 8000
 SAMPLE_VIDEO_PATH = os.path.join(BASE_DIR, "dataset", "test", "KaiV", "session_001", "clip_001.mp4")
@@ -58,12 +60,12 @@ SAMPLE_REPORT_JSON = os.path.join(BASE_DIR, "reports", "sample_video_evaluation.
 ADJUDICATION_LOG_PATH = os.path.join(BASE_DIR, "dataset", "teacher_adjudications.json")
 MANIFEST_PATH = os.path.join(BASE_DIR, "foley_clip_manifest.csv")
 MODEL_PATH = os.path.join(BASE_DIR, "models", "foley_osce_mlp.npz")
+UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
 
 
 def convert_media_recording(input_path: str, output_mp4: str, output_wav: str) -> None:
     """Convert browser webm/mp4 recording to standard MP4 (H.264) and 16 kHz mono WAV."""
     ffmpeg_bin = get_ffmpeg_path()
-    # 1. Transcode video to MP4
     cmd_vid = [
         ffmpeg_bin, "-y",
         "-i", input_path,
@@ -75,7 +77,6 @@ def convert_media_recording(input_path: str, output_mp4: str, output_wav: str) -
     ]
     subprocess.run(cmd_vid, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
 
-    # 2. Extract 16 kHz mono WAV
     cmd_aud = [
         ffmpeg_bin, "-y",
         "-i", output_mp4,
@@ -108,11 +109,11 @@ INDEX_HTML = """<!DOCTYPE html>
       --border: #dee2e6;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 70px; }
     header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 18px 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
     header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
     header p { font-size: 0.85rem; opacity: 0.9; margin-top: 3px; }
-    .container { max-width: 1280px; margin: 20px auto; padding: 0 20px; }
+    .container { max-width: 1320px; margin: 20px auto; padding: 0 20px; }
     .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
     .tab-btn { background: none; border: none; font-size: 1rem; font-weight: 600; padding: 8px 16px; border-radius: 6px; cursor: pointer; color: #495057; }
     .tab-btn.active { background: var(--primary); color: white; }
@@ -136,6 +137,8 @@ INDEX_HTML = """<!DOCTYPE html>
     .badge-p { background-color: var(--success); }
     .badge-p1 { background-color: var(--warning); color: #000; }
     .badge-r { background-color: var(--danger); }
+    .badge-defect { background-color: #e02424; }
+    .badge-safe { background-color: #0e9f6e; }
     .grade-hero { text-align: center; padding: 18px 10px; background: #eef5fc; border-radius: 8px; border: 1px dashed #b8daff; margin-bottom: 15px; }
     .grade-circle { display: inline-flex; width: 80px; height: 80px; border-radius: 50%; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
     .grade-title { font-size: 1.2rem; font-weight: 700; color: var(--primary-dark); }
@@ -155,7 +158,18 @@ INDEX_HTML = """<!DOCTYPE html>
     .recording-indicator { display: inline-flex; align-items: center; gap: 6px; color: var(--danger); font-weight: 700; font-size: 0.88rem; }
     .dot { width: 10px; height: 10px; background-color: var(--danger); border-radius: 50%; animation: pulse 1s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-    .retrain-alert { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px 15px; border-radius: 6px; margin-bottom: 15px; display: none; }
+    .retrainAlert { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px 15px; border-radius: 6px; margin-bottom: 15px; display: none; }
+    
+    /* Step Clip Gallery Styles */
+    .slice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 15px; margin-top: 15px; }
+    .slice-card { border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .slice-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .slice-header h4 { font-size: 0.9rem; font-weight: 700; color: var(--primary-dark); }
+    .slice-video { width: 100%; height: 180px; background: #000; border-radius: 5px; margin: 6px 0; object-fit: contain; }
+    .slice-meta { font-size: 0.78rem; color: #6c757d; display: flex; justify-content: space-between; margin-top: 4px; }
+    .defect-banner { padding: 6px 8px; border-radius: 4px; font-size: 0.78rem; margin: 6px 0; line-height: 1.3; }
+    .defect-banner.safe { background: #def7ec; color: #03543f; border-left: 3px solid var(--success); }
+    .defect-banner.defect { background: #fde8e8; color: #9b1c1c; border-left: 3px solid var(--danger); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -163,7 +177,7 @@ INDEX_HTML = """<!DOCTYPE html>
 <header>
   <div>
     <h1>D Y Patil Medical College - Department of Surgery</h1>
-    <p>AI OSCE Automated Skills Assessment Suite | Live USB Cam & Active Feedback</p>
+    <p>AI OSCE Automated Skills Assessment Suite | Sliced Step Videos with Audio & Defect Inspection</p>
   </div>
   <div>
     <span class="badge badge-p" style="font-size: 0.85rem;">Edge AI Engine: Online</span>
@@ -245,7 +259,7 @@ INDEX_HTML = """<!DOCTYPE html>
       <div class="card">
         <div class="card-title">
           <span id="playerTitle">Live Camera Viewfinder</span>
-          <span style="font-size: 0.8rem; color: #6c757d;">Interactive Playback</span>
+          <span style="font-size: 0.8rem; color: #6c757d;">Interactive Session Playback</span>
         </div>
         <!-- Live stream preview element -->
         <video id="liveCamPreview" autoplay playsinline muted style="display: block;"></video>
@@ -254,7 +268,7 @@ INDEX_HTML = """<!DOCTYPE html>
           <source id="videoSource" src="/video/sample" type="video/mp4">
         </video>
         <p style="font-size: 0.8rem; color: #6c757d; margin-top: 8px;">
-          💡 <em>Tip: Click any step in the table to instantly seek the video to that exact clip!</em>
+          💡 <em>Tip: Full audio is preserved. Below you can inspect individual sliced video clips for each step!</em>
         </p>
       </div>
 
@@ -273,12 +287,12 @@ INDEX_HTML = """<!DOCTYPE html>
       <div id="loader" class="card loader">
         <div class="spinner"></div>
         <p style="margin-top: 12px; font-weight: 600; color: var(--primary);">Processing multimodal video & audio frames from scratch...</p>
-        <p style="font-size: 0.8rem; color: #6c757d;">Analyzing motion energy, block motion, colour histograms, and FFT audio spectrum...</p>
+        <p style="font-size: 0.8rem; color: #6c757d;">Analyzing motion energy, block motion, colour histograms, audio FFT, and carving step sub-clips...</p>
       </div>
 
       <!-- Re-training alert -->
       <div id="retrainAlert" class="retrainAlert">
-        <strong>✓ Teacher Adjudication Saved!</strong> Model has been re-trained on your corrections.
+        <strong>[OK] Teacher Adjudication Saved!</strong> Model has been re-trained on your corrections.
       </div>
 
       <!-- Assessment Results Card -->
@@ -323,7 +337,7 @@ INDEX_HTML = """<!DOCTYPE html>
           <span class="badge" style="background: #6f42c1;">Continuous Learning</span>
         </div>
         <p style="font-size: 0.82rem; color: #6c757d; margin-bottom: 12px;">
-          If the model made any error, adjust the step below and add clinical remarks. The model will automatically fine-tune its weights so it never repeats the mistake!
+          If you spot any flaw in the sliced clips below, adjust the step verdict and write your clinical remarks. The model adapts immediately!
         </p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
           <div class="form-group">
@@ -345,7 +359,7 @@ INDEX_HTML = """<!DOCTYPE html>
         </div>
 
         <h4 style="font-size: 0.88rem; margin: 12px 0 6px 0; color: #495057;">Step Adjudication Overrides:</h4>
-        <div style="max-height: 250px; overflow-y: auto; border: 1px solid var(--border); border-radius: 5px;">
+        <div style="max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 5px;">
           <table style="margin-top: 0;">
             <thead>
               <tr>
@@ -366,18 +380,32 @@ INDEX_HTML = """<!DOCTYPE html>
       </div>
     </div>
   </div>
+
+  <!-- Full-Width Step Slices Evidence Gallery with Synchronized Audio -->
+  <div class="card" id="galleryCard">
+    <div class="card-title">
+      <span>Procedural Step Evidence Clips (with Synchronized Audio & Defect Inspection)</span>
+      <span class="badge badge-info">13 Individual Sub-Clips with Sound</span>
+    </div>
+    <p style="font-size: 0.85rem; color: #495057;">
+      Each procedural step below is a standalone sliced video clip containing its authentic synchronized audio.
+      Inspect student technique, verbal consent, and procedural dwell times to verify whether defects were present.
+    </p>
+
+    <div class="slice-grid" id="sliceGrid">
+      <!-- Dynamically populated with individual step clips -->
+    </div>
+  </div>
 </div>
 
 <script>
   let currentReport = null;
-  let currentVideoUrl = '/video/sample';
   let mediaRecorder = null;
   let recordedChunks = [];
   let recordTimer = null;
   let recordSeconds = 0;
   let activeStream = null;
 
-  // 1. Camera Initialization
   async function initCameras() {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
@@ -394,7 +422,7 @@ INDEX_HTML = """<!DOCTYPE html>
         startCameraPreview();
       }
     } catch (e) {
-      console.warn('Camera enumeration error:', e);
+      console.warn('Camera error:', e);
     }
   }
 
@@ -420,7 +448,6 @@ INDEX_HTML = """<!DOCTYPE html>
     }
   }
 
-  // 2. Live Recording
   function startLiveRecording() {
     if (!activeStream) {
       alert('Camera is not active. Please allow camera permissions.');
@@ -440,7 +467,6 @@ INDEX_HTML = """<!DOCTYPE html>
     mediaRecorder.onstop = uploadLiveRecording;
     mediaRecorder.start(1000);
 
-    // UI Updates
     document.getElementById('btnStartRecord').style.display = 'none';
     document.getElementById('btnStopRecord').style.display = 'block';
     document.getElementById('recordingBadge').style.display = 'inline-flex';
@@ -472,7 +498,6 @@ INDEX_HTML = """<!DOCTYPE html>
     formData.append('student_id', document.getElementById('liveStudentId').value);
     formData.append('session_id', document.getElementById('liveSessionId').value);
 
-    // Switch viewfinder to review player
     const url = URL.createObjectURL(blob);
     const player = document.getElementById('player');
     player.src = url;
@@ -495,7 +520,6 @@ INDEX_HTML = """<!DOCTYPE html>
     });
   }
 
-  // 3. Tab Switching
   function switchTab(tab) {
     document.getElementById('tabLive').className = tab === 'live' ? 'tab-btn active' : 'tab-btn';
     document.getElementById('tabSample').className = tab === 'sample' ? 'tab-btn active' : 'tab-btn';
@@ -555,7 +579,7 @@ INDEX_HTML = """<!DOCTYPE html>
       auditText.innerHTML = '[*] Zero critical safety violations detected.<br>[*] All steps performed in chronological order.';
     }
 
-    // Populate checklist table
+    // Populate checklist table & teacher table
     const tbody = document.getElementById('checklistBody');
     tbody.innerHTML = '';
     const teacherBody = document.getElementById('teacherStepBody');
@@ -567,7 +591,6 @@ INDEX_HTML = """<!DOCTYPE html>
       const timeStr = step.start_sec !== null ? `${step.start_sec.toFixed(1)}s - ${step.end_sec.toFixed(1)}s` : '--';
       const confStr = step.confidence !== null ? `${(step.confidence * 100).toFixed(1)}%` : '--';
 
-      // 1. Candidate Table
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td><strong>${sid}</strong></td>
@@ -581,7 +604,6 @@ INDEX_HTML = """<!DOCTYPE html>
       `;
       tbody.appendChild(tr);
 
-      // 2. Teacher Reassessment Table
       const tTr = document.createElement('tr');
       tTr.innerHTML = `
         <td><strong>${sid}</strong>. ${step.label}</td>
@@ -589,7 +611,7 @@ INDEX_HTML = """<!DOCTYPE html>
           <select id="teacher_step_${sid}" class="form-control" style="font-size:0.8rem; padding:4px;">
             <option value="PASS" ${step.passed ? 'selected' : ''}>Pass (Performed Correctly)</option>
             <option value="PROMPTED" ${step.status.includes('P-1') ? 'selected' : ''}>Pass with Prompt (P-1)</option>
-            <option value="FAIL" ${!step.passed ? 'selected' : ''}>Omitted / Unperformed (Fail)</option>
+            <option value="FAIL" ${!step.passed ? 'selected' : ''}>Omitted / Defect (Fail)</option>
           </select>
         </td>
         <td>
@@ -599,8 +621,52 @@ INDEX_HTML = """<!DOCTYPE html>
       teacherBody.appendChild(tTr);
     }
 
-    // Set teacher default grade
     document.getElementById('teacherGrade').value = data.final_grade;
+
+    // Render Sliced Step Video Clips with Audio
+    renderStepClipsGallery(data.step_clips || []);
+  }
+
+  function renderStepClipsGallery(clips) {
+    const grid = document.getElementById('sliceGrid');
+    grid.innerHTML = '';
+
+    if (!clips || clips.length === 0) {
+      grid.innerHTML = '<p style="color:#6c757d; padding:15px;">No sliced evidence clips available for this session.</p>';
+      return;
+    }
+
+    clips.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'slice-card';
+
+      const d = c.defect_audit || {};
+      const isDefect = d.has_defect === true;
+      const defectBadge = isDefect
+        ? `<span class="badge badge-defect">⚠️ ${d.defect_level || 'DEFECT'}</span>`
+        : `<span class="badge badge-safe">✓ VERIFIED SAFE</span>`;
+
+      const defectBanner = isDefect
+        ? `<div class="defect-banner defect"><strong>${d.defect_summary}</strong><br>${d.clinical_notes}</div>`
+        : `<div class="defect-banner safe"><strong>${d.defect_summary}</strong><br>${d.clinical_notes}</div>`;
+
+      card.innerHTML = `
+        <div class="slice-header">
+          <h4>Step ${c.step_id}: ${c.step_label}</h4>
+          ${defectBadge}
+        </div>
+        ${defectBanner}
+        <video class="slice-video" controls playsinline preload="metadata" poster="${c.thumb_url || ''}">
+          <source src="${c.clip_url}" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+        <div class="slice-meta">
+          <span>⏱ ${c.start_sec.toFixed(1)}s - ${c.end_sec.toFixed(1)}s (${c.duration_sec.toFixed(1)}s)</span>
+          <span style="color:#0056b3; font-weight:600;">🔊 Audio Active</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
   }
 
   function submitTeacherAdjudication() {
@@ -638,7 +704,7 @@ INDEX_HTML = """<!DOCTYPE html>
       btn.disabled = false;
       const alertBox = document.getElementById('retrainAlert');
       alertBox.style.display = 'block';
-      alertBox.innerHTML = `<strong>✓ Adjudication & Continuous Learning Complete!</strong><br>${data.message}`;
+      alertBox.innerHTML = `<strong>[OK] Adjudication & Continuous Learning Complete!</strong><br>${data.message}`;
       if (data.updated_report) {
         renderReport(data.updated_report);
       }
@@ -703,7 +769,7 @@ INDEX_HTML = """<!DOCTYPE html>
 
 
 class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
-    """HTTP Server Handler with Live Video Ingestion & Active Adjudication."""
+    """HTTP Server Handler with Live Video, Sliced Clips & Active Retraining."""
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -735,6 +801,26 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+
+        elif path.startswith("/video/slices/"):
+            # Format: /video/slices/{session_id}/{filename}
+            rel_subpath = path.replace("/video/slices/", "").lstrip("/")
+            full_file_path = os.path.join(UPLOADS_DIR, "slices", *rel_subpath.split("/"))
+
+            if os.path.isfile(full_file_path):
+                if full_file_path.endswith(".mp4"):
+                    self.serve_video_file(full_file_path)
+                elif full_file_path.endswith(".jpg") or full_file_path.endswith(".jpeg"):
+                    self.send_response(200)
+                    self.send_header("Content-Type", "image/jpeg")
+                    self.send_header("Content-Length", str(os.path.getsize(full_file_path)))
+                    self.end_headers()
+                    with open(full_file_path, "rb") as f:
+                        shutil.copyfileobj(f, self.wfile)
+                else:
+                    self.send_error(400, "Unsupported media extension")
+            else:
+                self.send_error(404, "Slice file not found")
 
         elif path == "/api/reports/scorecard.txt":
             if os.path.isfile(SAMPLE_REPORT_TXT):
@@ -785,23 +871,21 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                     environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type}
                 )
 
-                student_id = form.getvalue("student_id", "Live_Candidate")
-                session_id = form.getvalue("session_id", "live_session")
+                student_id = form.getvalue("student_id", "Candidate")
+                session_id = form.getvalue("session_id", f"session_{int(time.time())}")
                 file_item = form["video"] if "video" in form else None
 
                 if not file_item or not file_item.file:
                     self.send_error(400, "Missing uploaded video file")
                     return
 
-                upload_dir = os.path.join(BASE_DIR, "uploads")
-                os.makedirs(upload_dir, exist_ok=True)
+                os.makedirs(UPLOADS_DIR, exist_ok=True)
                 raw_filename = f"rec_{int(time.time())}.webm" if parsed.path == "/api/assess_live" else f"rec_{int(time.time())}.mp4"
-                raw_path = os.path.join(upload_dir, raw_filename)
+                raw_path = os.path.join(UPLOADS_DIR, raw_filename)
 
                 with open(raw_path, "wb") as f_out:
                     shutil.copyfileobj(file_item.file, f_out)
 
-                # If live webm, convert to standard MP4 and WAV
                 if parsed.path == "/api/assess_live":
                     target_mp4 = raw_path.replace(".webm", ".mp4")
                     target_wav = raw_path.replace(".webm", ".wav")
@@ -812,7 +896,7 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                     video_eval_path = raw_path
                     audio_eval_path = None
 
-                # Run assessment
+                # Run assessment (includes automatic slicing of step clips with audio)
                 report = evaluate_video(
                     video_path=video_eval_path,
                     audio_path=audio_eval_path,
@@ -835,7 +919,6 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
 
         elif parsed.path == "/api/teacher_adjudicate":
-            # Teacher submits corrections & triggers active model fine-tuning
             try:
                 length = int(self.headers.get("Content-Length", 0))
                 body = self.rfile.read(length).decode("utf-8")
@@ -848,7 +931,6 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                 remarks = data.get("teacher_remarks", "")
                 step_decisions = data.get("steps", {})
 
-                # 1. Save adjudication record
                 os.makedirs(os.path.dirname(ADJUDICATION_LOG_PATH), exist_ok=True)
                 adj_records = []
                 if os.path.isfile(ADJUDICATION_LOG_PATH):
@@ -871,11 +953,9 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                 with open(ADJUDICATION_LOG_PATH, "w", encoding="utf-8") as f:
                     json.dump(adj_records, f, indent=2)
 
-                # 2. Trigger active fine-tuning on manifest data
                 print(f"[*] Active Retraining triggered by faculty {teacher_name} for session {session_id}...")
                 model = FoleyStepClassifier.load(MODEL_PATH)
 
-                # Load manifest features
                 records = read_manifest(MANIFEST_PATH)
                 sample_row = records[0]
                 vid_path = sample_row["video_path"]
@@ -894,7 +974,6 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                 X = np.array(X_list, dtype=np.float32)
                 y = np.array(y_list, dtype=np.int64)
 
-                # Fine-tune model weights so zero errors remain
                 model, epochs, final_acc = fine_tune_until_zero_mistakes(
                     model=model,
                     X=X,
@@ -907,7 +986,6 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                 model.save(MODEL_PATH)
                 print(f"[OK] Model successfully adapted and saved to {MODEL_PATH}!")
 
-                # Return success response
                 res = {
                     "status": "success",
                     "message": f"Teacher adjudication saved by {teacher_name}. Model fine-tuned to {final_acc*100:.1f}% accuracy on session ground truth (0 mistakes).",
@@ -982,7 +1060,7 @@ def start_server():
     print("   D Y PATIL MEDICAL COLLEGE - OSCE EVALUATION SUITE (WEB SERVER)")
     print("=" * 75)
     print(f"[*] Local Web Server running at: http://127.0.0.1:{PORT}")
-    print("[*] Features: Live USB/Webcam stream, Reassessment, Active Retraining")
+    print("[*] Features: Sliced step video clips with audio, defect inspection, live cam")
     print("=" * 75)
     try:
         httpd.serve_forever()

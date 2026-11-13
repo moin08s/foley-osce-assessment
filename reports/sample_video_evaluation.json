@@ -254,5 +254,254 @@
     "model_grade": "P",
     "grade_match": true,
     "discrepancies": []
-  }
+  },
+  "step_clips": [
+    {
+      "step_id": 1,
+      "step_label": "introduce_explain",
+      "start_sec": 0.0,
+      "end_sec": 8.0,
+      "duration_sec": 8.0,
+      "confidence": 1.0,
+      "clip_filename": "step_01_introduce_explain.mp4",
+      "clip_url": "/video/slices/session_001/step_01_introduce_explain.mp4",
+      "thumb_url": "/video/slices/session_001/step_01_introduce_explain.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 2,
+      "step_label": "informed_consent",
+      "start_sec": 8.0,
+      "end_sec": 16.0,
+      "duration_sec": 8.0,
+      "confidence": 1.0,
+      "clip_filename": "step_02_informed_consent.mp4",
+      "clip_url": "/video/slices/session_001/step_02_informed_consent.mp4",
+      "thumb_url": "/video/slices/session_001/step_02_informed_consent.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 3,
+      "step_label": "check_instruments",
+      "start_sec": 16.0,
+      "end_sec": 27.0,
+      "duration_sec": 11.0,
+      "confidence": 1.0,
+      "clip_filename": "step_03_check_instruments.mp4",
+      "clip_url": "/video/slices/session_001/step_03_check_instruments.mp4",
+      "thumb_url": "/video/slices/session_001/step_03_check_instruments.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 4,
+      "step_label": "hand_hygiene_gloves",
+      "start_sec": 27.0,
+      "end_sec": 39.5,
+      "duration_sec": 12.5,
+      "confidence": 1.0,
+      "clip_filename": "step_04_hand_hygiene_gloves.mp4",
+      "clip_url": "/video/slices/session_001/step_04_hand_hygiene_gloves.mp4",
+      "thumb_url": "/video/slices/session_001/step_04_hand_hygiene_gloves.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 5,
+      "step_label": "privacy_position_exposure",
+      "start_sec": 39.5,
+      "end_sec": 50.5,
+      "duration_sec": 11.0,
+      "confidence": 1.0,
+      "clip_filename": "step_05_privacy_position_exposure.mp4",
+      "clip_url": "/video/slices/session_001/step_05_privacy_position_exposure.mp4",
+      "thumb_url": "/video/slices/session_001/step_05_privacy_position_exposure.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 6,
+      "step_label": "painting_draping",
+      "start_sec": 50.5,
+      "end_sec": 71.0,
+      "duration_sec": 20.5,
+      "confidence": 1.0,
+      "clip_filename": "step_06_painting_draping.mp4",
+      "clip_url": "/video/slices/session_001/step_06_painting_draping.mp4",
+      "thumb_url": "/video/slices/session_001/step_06_painting_draping.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 7,
+      "step_label": "lignocaine_jelly",
+      "start_sec": 71.0,
+      "end_sec": 87.0,
+      "duration_sec": 16.0,
+      "confidence": 1.0,
+      "clip_filename": "step_07_lignocaine_jelly.mp4",
+      "clip_url": "/video/slices/session_001/step_07_lignocaine_jelly.mp4",
+      "thumb_url": "/video/slices/session_001/step_07_lignocaine_jelly.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 8,
+      "step_label": "open_catheter_insert",
+      "start_sec": 87.0,
+      "end_sec": 112.5,
+      "duration_sec": 25.5,
+      "confidence": 1.0,
+      "clip_filename": "step_08_open_catheter_insert.mp4",
+      "clip_url": "/video/slices/session_001/step_08_open_catheter_insert.mp4",
+      "thumb_url": "/video/slices/session_001/step_08_open_catheter_insert.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 9,
+      "step_label": "attach_urobag_confirm_urine",
+      "start_sec": 112.5,
+      "end_sec": 123.5,
+      "duration_sec": 11.0,
+      "confidence": 1.0,
+      "clip_filename": "step_09_attach_urobag_confirm_urine.mp4",
+      "clip_url": "/video/slices/session_001/step_09_attach_urobag_confirm_urine.mp4",
+      "thumb_url": "/video/slices/session_001/step_09_attach_urobag_confirm_urine.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 10,
+      "step_label": "inflate_balloon",
+      "start_sec": 123.5,
+      "end_sec": 136.0,
+      "duration_sec": 12.5,
+      "confidence": 1.0,
+      "clip_filename": "step_10_inflate_balloon.mp4",
+      "clip_url": "/video/slices/session_001/step_10_inflate_balloon.mp4",
+      "thumb_url": "/video/slices/session_001/step_10_inflate_balloon.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 11,
+      "step_label": "traction_until_resistance",
+      "start_sec": 136.0,
+      "end_sec": 140.5,
+      "duration_sec": 4.5,
+      "confidence": 1.0,
+      "clip_filename": "step_11_traction_until_resistance.mp4",
+      "clip_url": "/video/slices/session_001/step_11_traction_until_resistance.mp4",
+      "thumb_url": "/video/slices/session_001/step_11_traction_until_resistance.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 12,
+      "step_label": "reposition_prepuce",
+      "start_sec": 140.5,
+      "end_sec": 147.0,
+      "duration_sec": 6.5,
+      "confidence": 1.0,
+      "clip_filename": "step_12_reposition_prepuce.mp4",
+      "clip_url": "/video/slices/session_001/step_12_reposition_prepuce.mp4",
+      "thumb_url": "/video/slices/session_001/step_12_reposition_prepuce.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    },
+    {
+      "step_id": 13,
+      "step_label": "tip_dressing",
+      "start_sec": 147.0,
+      "end_sec": 158.0,
+      "duration_sec": 11.0,
+      "confidence": 1.0,
+      "clip_filename": "step_13_tip_dressing.mp4",
+      "clip_url": "/video/slices/session_001/step_13_tip_dressing.mp4",
+      "thumb_url": "/video/slices/session_001/step_13_tip_dressing.jpg",
+      "has_audio": true,
+      "slice_success": true,
+      "defect_audit": {
+        "has_defect": false,
+        "defect_level": "NONE",
+        "defect_summary": "Technique Verified Correct",
+        "clinical_notes": "Step executed according to standard surgical checklist."
+      }
+    }
+  ]
 }

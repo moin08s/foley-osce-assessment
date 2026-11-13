@@ -28,6 +28,7 @@ from src.features import compute_short_time_energy, extract_window_features
 from src.grading import OSCEGrader
 from src.model import FoleyStepClassifier
 from src.session_checker import SessionChecker
+from src.video_slicer import slice_session_steps
 
 
 def extract_audio_from_video(video_path: str, output_wav_path: str) -> None:
@@ -130,6 +131,17 @@ def evaluate_video(
             detected_segments=detected_segments,
             faculty_ground_truth=faculty_ground_truth,
         )
+        # 9. Slice individual step evidence clips with audio and defect audits
+        upload_base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
+        step_clips = slice_session_steps(
+            video_path=video_path,
+            detected_segments=detected_segments,
+            output_base_dir=upload_base,
+            session_id=session_id,
+            speech_activity=speech_activity,
+        )
+        report["step_clips"] = step_clips
+
         return report
 
     finally:

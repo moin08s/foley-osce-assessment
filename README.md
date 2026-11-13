@@ -106,7 +106,16 @@ python predict.py --video "dataset/test/KaiV/session_001/clip_001.mp4" \
                   --out-report "reports/candidate_scorecard.txt"
 ```
 
-If you do not specify an audio path, `predict.py` automatically extracts the aligned 16 kHz mono WAV using FFmpeg in the background.
+If you do not specify an audio path, `predict.py` automatically extracts the aligned 16 kHz mono WAV using FFmpeg in the background. It also slices individual evidence video sub-clips with synchronized audio for all 13 steps into `uploads/slices/<session_id>/` and inspects each clip for procedural flaws or safety defects.
+
+---
+
+## 7. Interactive Step Video Slices Gallery (with Audio)
+
+Teachers and examiners can inspect each procedural step individually with synchronized audio:
+- **Audio Verification:** Student introduction and verbal consent audible at full volume.
+- **Defect Auditing:** Flaws such as missing verbal consent, inflating the retention balloon prior to urine flashback, or inadequate prepuce reduction are flagged with clinical diagnostic alerts directly on the corresponding clip card.
+- **Web Playback:** Preloaded with companion JPEG poster thumbnails for instant frame visibility and HTML5 video streaming.
 
 ---
 

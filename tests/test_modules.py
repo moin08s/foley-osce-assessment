@@ -34,6 +34,7 @@ from src.features import (
 from src.grading import OSCEGrader
 from src.model import FoleyStepClassifier, StandardScaler
 from src.session_checker import SessionChecker
+from src.video_slicer import audit_step_defects
 
 
 class TestDataLoader(unittest.TestCase):
@@ -178,6 +179,16 @@ class TestSessionCheckerAndGrading(unittest.TestCase):
 
         self.assertEqual(report["final_grade"], "R")
         self.assertGreater(len(report["critical_safety_violations"]), 0)
+
+    def test_video_slicer_defect_audit(self):
+        # Normal step
+        aud_safe = audit_step_defects(1, "introduce_explain", 8.0, list(range(1, 14)), speech_vad_ratio=0.2)
+        self.assertFalse(aud_safe["has_defect"])
+
+        # Balloon before urine flow defect
+        aud_defect = audit_step_defects(10, "inflate_balloon", 8.0, [1, 2, 3, 4, 5, 6, 7, 8, 10, 9, 11, 12, 13])
+        self.assertTrue(aud_defect["has_defect"])
+        self.assertEqual(aud_defect["defect_level"], "CRITICAL")
 
 
 if __name__ == "__main__":
