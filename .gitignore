@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Video files (> 100 MB exceeds GitHub limits)
+*.mp4
+*.MP4
+*.avi
+*.mov
+*.mkv
+new_videos/
+
+# Documents & raw data
+*.docx
+*.pdf
+
+# Legacy experimental caches & large pre-trained weights
+catheter_ai_project/
+models/dinov2_cache/
+*.npy
+models/test_model.npz
+
+# Temporary logs
+*.log
+tmp/

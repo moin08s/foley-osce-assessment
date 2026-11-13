@@ -1,0 +1,202 @@
+{
+  "skill": "Foley's catheterization (male)",
+  "constraint": "Video clips + audio only. No third-party APIs, cloud services or pretrained models; model trained from scratch.",
+  "clip_format": {
+    "video": "mp4, 1080p or 720p, 25-30 fps",
+    "audio": "mono WAV, 16 kHz, 16-bit (extracted from same clip, time-aligned)",
+    "clip_length": "2-6 s sliding windows (50% overlap) cut from labelled step segments",
+    "fixed_camera": "same side-on angle as sample video; also record 2 more angles for robustness"
+  },
+  "input_features_from_scratch": {
+    "video": [
+      "frame-difference motion energy",
+      "optical-flow-like block motion (grid 8x8)",
+      "colour histograms (gloves, drape green, yellow fluid, orange catheter)",
+      "downsampled grayscale 64x64 frames for a small 3D-CNN/CNN-LSTM"
+    ],
+    "audio": [
+      "log-mel spectrogram or MFCC computed with FFT",
+      "short-time energy for voice activity (speech vs silence)",
+      "spectral flux for impulse sounds (clicks, tears, squeezes)"
+    ]
+  },
+  "model_outputs": {
+    "per_window": "14-way label (13 steps + background)",
+    "per_session": "ordered step list, missed steps, wrong order, step durations",
+    "scoring": "all 13 present+correct = P; one step corrected after prompt = P-1; else R"
+  },
+  "speech_languages": [
+    "English",
+    "Hindi",
+    "Marathi (students may mix; collect all)"
+  ],
+  "steps": [
+    {
+      "step_id": 1,
+      "label": "introduce_explain",
+      "audio_importance": "PRIMARY",
+      "expected_speech": "Hello, I am Dr ___. I will be inserting a urinary catheter to drain your bladder. It may be slightly uncomfortable.",
+      "expected_sounds": "speech only",
+      "video_motion_signature": "upper-body mostly still, hand gestures",
+      "typical_clip_sec": 10,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "first"
+    },
+    {
+      "step_id": 2,
+      "label": "informed_consent",
+      "audio_importance": "PRIMARY",
+      "expected_speech": "Do you understand? May I proceed? / Do I have your permission?",
+      "expected_sounds": "speech, short pause after question",
+      "video_motion_signature": "still, slight nod",
+      "typical_clip_sec": 6,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "after 1, before 4"
+    },
+    {
+      "step_id": 3,
+      "label": "check_instruments",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "(optional) 'Checking my equipment' / naming items",
+      "expected_sounds": "plastic rustle, metal tray clink",
+      "video_motion_signature": "hand moves across tray, pointing",
+      "typical_clip_sec": 12,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": ""
+    },
+    {
+      "step_id": 4,
+      "label": "hand_hygiene_gloves",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "(optional) 'Sanitising hands'",
+      "expected_sounds": "sanitiser spray/pump, glove-box paper tear, glove snap",
+      "video_motion_signature": "hands rub together then glove donning",
+      "typical_clip_sec": 25,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "before 6"
+    },
+    {
+      "step_id": 5,
+      "label": "privacy_position_exposure",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "'I am closing the screen / please lie flat'",
+      "expected_sounds": "curtain rail sound",
+      "video_motion_signature": "arm sweep pulling screen, patient positioning",
+      "typical_clip_sec": 10,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": ""
+    },
+    {
+      "step_id": 6,
+      "label": "painting_draping",
+      "audio_importance": "LOW",
+      "expected_speech": "(optional) 'Painting with betadine'",
+      "expected_sounds": "cotton/forceps tap on tray, drape unfold rustle",
+      "video_motion_signature": "repeated outward swab strokes, then drape spread",
+      "typical_clip_sec": 25,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": ""
+    },
+    {
+      "step_id": 7,
+      "label": "lignocaine_jelly",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "'Applying jelly, will wait for it to act'",
+      "expected_sounds": "tube squeeze sound",
+      "video_motion_signature": "hand squeezing tube at meatus, then stillness (wait)",
+      "typical_clip_sec": 20,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": ""
+    },
+    {
+      "step_id": 8,
+      "label": "open_catheter_insert",
+      "audio_importance": "LOW",
+      "expected_speech": "'Inserting till the Y-junction'",
+      "expected_sounds": "plastic sleeve peel, rustle",
+      "video_motion_signature": "catheter pulled from pack, slow linear insertion",
+      "typical_clip_sec": 25,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": ""
+    },
+    {
+      "step_id": 9,
+      "label": "attach_urobag_confirm_urine",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "'Urine is draining, confirming bladder entry'",
+      "expected_sounds": "connector click",
+      "video_motion_signature": "hand connects tube, yellow fluid motion in tube",
+      "typical_clip_sec": 12,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "before 10"
+    },
+    {
+      "step_id": 10,
+      "label": "inflate_balloon",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "'Inflating balloon with distilled water'",
+      "expected_sounds": "syringe plunger click",
+      "video_motion_signature": "syringe at side port, small plunger motion",
+      "typical_clip_sec": 10,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "after 9"
+    },
+    {
+      "step_id": 11,
+      "label": "traction_until_resistance",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "'Pulling back until I feel resistance'",
+      "expected_sounds": "none",
+      "video_motion_signature": "short backward pull then hold",
+      "typical_clip_sec": 6,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "after 10"
+    },
+    {
+      "step_id": 12,
+      "label": "reposition_prepuce",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "'Repositioning foreskin to avoid paraphimosis'",
+      "expected_sounds": "none",
+      "video_motion_signature": "small forward fold motion at glans",
+      "typical_clip_sec": 6,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "after 11"
+    },
+    {
+      "step_id": 13,
+      "label": "tip_dressing",
+      "audio_importance": "SUPPORT",
+      "expected_speech": "'Applying dressing at the tip'",
+      "expected_sounds": "gauze/tape rustle",
+      "video_motion_signature": "dressing placed at catheter tip",
+      "typical_clip_sec": 10,
+      "min_correct_clips": 60,
+      "min_error_clips": 20,
+      "required_order_constraint": "last"
+    }
+  ],
+  "error_clip_recipes": [
+    "Skip a step entirely (session missing step N)",
+    "Swap order: inflate balloon before urine seen (step 10 before 9)",
+    "Contamination: tip touches non-sterile surface (step 8)",
+    "No speech in steps 1-2 (silent student)",
+    "Consent asked after gloves worn",
+    "Inward/back-and-forth painting strokes (step 6)",
+    "Short jelly / no waiting (step 7)",
+    "Forget repositioning prepuce (step 12)"
+  ],
+  "folder_structure": "dataset/{train,val,test}/{student_id}/{session_id}/clip_{n}.mp4 + clip_{n}.wav + labels.csv"
+}

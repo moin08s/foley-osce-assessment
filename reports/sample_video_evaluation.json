@@ -1,0 +1,258 @@
+{
+  "institution": "D Y Patil Medical College",
+  "procedure": "Male Foley's Catheterization",
+  "timestamp": "2026-11-13 15:38:34",
+  "student_id": "KaiV",
+  "session_id": "session_001",
+  "final_grade": "P",
+  "grade_description": "Pass: Advance Beginner (Demonstrates independent competence; all 13 steps completed safely in sequence without prompting)",
+  "score": "13/13 (100.0%)",
+  "all_13_present": true,
+  "prompts_count": 0,
+  "detected_segments": [
+    {
+      "step_id": 1,
+      "step_label": "introduce_explain",
+      "start_sec": 0.0,
+      "end_sec": 8.0,
+      "duration_sec": 8.0,
+      "confidence": 1.0
+    },
+    {
+      "step_id": 2,
+      "step_label": "informed_consent",
+      "start_sec": 6.0,
+      "end_sec": 16.0,
+      "duration_sec": 10.0,
+      "confidence": 0.999
+    },
+    {
+      "step_id": 3,
+      "step_label": "check_instruments",
+      "start_sec": 14.0,
+      "end_sec": 28.0,
+      "duration_sec": 14.0,
+      "confidence": 1.0
+    },
+    {
+      "step_id": 4,
+      "step_label": "hand_hygiene_gloves",
+      "start_sec": 26.0,
+      "end_sec": 40.0,
+      "duration_sec": 14.0,
+      "confidence": 1.0
+    },
+    {
+      "step_id": 5,
+      "step_label": "privacy_position_exposure",
+      "start_sec": 38.0,
+      "end_sec": 52.0,
+      "duration_sec": 14.0,
+      "confidence": 1.0
+    },
+    {
+      "step_id": 6,
+      "step_label": "painting_draping",
+      "start_sec": 50.0,
+      "end_sec": 72.0,
+      "duration_sec": 22.0,
+      "confidence": 1.0
+    },
+    {
+      "step_id": 7,
+      "step_label": "lignocaine_jelly",
+      "start_sec": 70.0,
+      "end_sec": 88.0,
+      "duration_sec": 18.0,
+      "confidence": 1.0
+    },
+    {
+      "step_id": 8,
+      "step_label": "open_catheter_insert",
+      "start_sec": 86.0,
+      "end_sec": 114.0,
+      "duration_sec": 28.0,
+      "confidence": 1.0
+    },
+    {
+      "step_id": 9,
+      "step_label": "attach_urobag_confirm_urine",
+      "start_sec": 112.0,
+      "end_sec": 124.0,
+      "duration_sec": 12.0,
+      "confidence": 0.988
+    },
+    {
+      "step_id": 10,
+      "step_label": "inflate_balloon",
+      "start_sec": 122.0,
+      "end_sec": 136.0,
+      "duration_sec": 14.0,
+      "confidence": 0.995
+    },
+    {
+      "step_id": 11,
+      "step_label": "traction_until_resistance",
+      "start_sec": 134.0,
+      "end_sec": 142.0,
+      "duration_sec": 8.0,
+      "confidence": 0.998
+    },
+    {
+      "step_id": 12,
+      "step_label": "reposition_prepuce",
+      "start_sec": 140.0,
+      "end_sec": 148.0,
+      "duration_sec": 8.0,
+      "confidence": 0.998
+    },
+    {
+      "step_id": 13,
+      "step_label": "tip_dressing",
+      "start_sec": 146.0,
+      "end_sec": 157.99,
+      "duration_sec": 11.99,
+      "confidence": 1.0
+    }
+  ],
+  "step_results": {
+    "1": {
+      "step_id": 1,
+      "label": "introduce_explain",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 0.0,
+      "end_sec": 8.0,
+      "duration_sec": 8.0,
+      "confidence": 1.0
+    },
+    "2": {
+      "step_id": 2,
+      "label": "informed_consent",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 6.0,
+      "end_sec": 16.0,
+      "duration_sec": 10.0,
+      "confidence": 0.999
+    },
+    "3": {
+      "step_id": 3,
+      "label": "check_instruments",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 14.0,
+      "end_sec": 28.0,
+      "duration_sec": 14.0,
+      "confidence": 1.0
+    },
+    "4": {
+      "step_id": 4,
+      "label": "hand_hygiene_gloves",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 26.0,
+      "end_sec": 40.0,
+      "duration_sec": 14.0,
+      "confidence": 1.0
+    },
+    "5": {
+      "step_id": 5,
+      "label": "privacy_position_exposure",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 38.0,
+      "end_sec": 52.0,
+      "duration_sec": 14.0,
+      "confidence": 1.0
+    },
+    "6": {
+      "step_id": 6,
+      "label": "painting_draping",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 50.0,
+      "end_sec": 72.0,
+      "duration_sec": 22.0,
+      "confidence": 1.0
+    },
+    "7": {
+      "step_id": 7,
+      "label": "lignocaine_jelly",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 70.0,
+      "end_sec": 88.0,
+      "duration_sec": 18.0,
+      "confidence": 1.0
+    },
+    "8": {
+      "step_id": 8,
+      "label": "open_catheter_insert",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 86.0,
+      "end_sec": 114.0,
+      "duration_sec": 28.0,
+      "confidence": 1.0
+    },
+    "9": {
+      "step_id": 9,
+      "label": "attach_urobag_confirm_urine",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 112.0,
+      "end_sec": 124.0,
+      "duration_sec": 12.0,
+      "confidence": 0.988
+    },
+    "10": {
+      "step_id": 10,
+      "label": "inflate_balloon",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 122.0,
+      "end_sec": 136.0,
+      "duration_sec": 14.0,
+      "confidence": 0.995
+    },
+    "11": {
+      "step_id": 11,
+      "label": "traction_until_resistance",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 134.0,
+      "end_sec": 142.0,
+      "duration_sec": 8.0,
+      "confidence": 0.998
+    },
+    "12": {
+      "step_id": 12,
+      "label": "reposition_prepuce",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 140.0,
+      "end_sec": 148.0,
+      "duration_sec": 8.0,
+      "confidence": 0.998
+    },
+    "13": {
+      "step_id": 13,
+      "label": "tip_dressing",
+      "status": "PERFORMED (Pass)",
+      "passed": true,
+      "start_sec": 146.0,
+      "end_sec": 157.99,
+      "duration_sec": 11.99,
+      "confidence": 1.0
+    }
+  },
+  "ordering_violations": [],
+  "critical_safety_violations": [],
+  "faculty_alignment": {
+    "faculty_grade": "P",
+    "model_grade": "P",
+    "grade_match": true,
+    "discrepancies": []
+  }
+}
