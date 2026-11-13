@@ -67,13 +67,16 @@ class OSCEGrader:
                     "confidence": seg["confidence"] if seg else None,
                 }
 
+        # Total defects count: missing steps + prompts
+        total_defects = len(missing_steps) + prompts_count
+
         # Grade determination
-        if all_present and len(crit_violations) == 0 and len(violations) == 0 and prompts_count == 0:
+        if all_present and len(crit_violations) == 0 and len(violations) == 0 and total_defects == 0:
             final_grade = "P"
             grade_description = "Pass: Advance Beginner (Demonstrates independent competence; all 13 steps completed safely in sequence without prompting)"
-        elif all_present and len(crit_violations) == 0 and prompts_count == 1:
+        elif len(crit_violations) == 0 and total_defects == 1:
             final_grade = "P-1"
-            grade_description = "Pass with 1 Prompt: Beginner (Competent performance with one minor verbal prompt/correction; zero safety compromise)"
+            grade_description = "Pass with 1 Prompt / Minor Defect: Beginner (Competent performance with one minor prompt/defect; zero critical safety compromise)"
         else:
             final_grade = "R"
             grade_description = "Needs Remediation: Novice (Procedural omissions, critical safety breaches, or multiple prompts require faculty remediation before unassisted clinical practice)"

@@ -25,11 +25,12 @@ class SessionChecker:
         self.smoothing_window_size = smoothing_window_size
         self.speech_threshold = speech_threshold
 
-    def smooth_predictions(self, window_probs: np.ndarray) -> np.ndarray:
-        """Apply temporal moving average filter across window probabilities.
+    def smooth_predictions(self, window_probs: np.ndarray, method: str = "viterbi") -> np.ndarray:
+        """Smooth window predictions across time.
         
         Args:
             window_probs: (N_windows, 14) array of class probabilities
+            method: "viterbi" (enforces forward clinical progression) or "moving_average"
             
         Returns:
             smoothed_labels: (N_windows,) array of smoothed step predictions
@@ -37,11 +38,13 @@ class SessionChecker:
         if len(window_probs) == 0:
             return np.array([], dtype=int)
 
+        if method == "viterbi":
+            return self.viterbi_decode(window_probs)
+
         n_windows, n_classes = window_probs.shape
         w = self.smoothing_window_size
         pad_size = w // 2
 
-        # Symmetric edge padding for temporal smoothing
         padded_probs = np.pad(window_probs, ((pad_size, pad_size), (0, 0)), mode="edge")
         smoothed_probs = np.zeros_like(window_probs)
 
@@ -49,6 +52,53 @@ class SessionChecker:
             smoothed_probs[i] = padded_probs[i : i + w].mean(axis=0)
 
         return np.argmax(smoothed_probs, axis=1)
+
+    def viterbi_decode(self, window_probs: np.ndarray) -> np.ndarray:
+        """Dynamic programming Viterbi decoder enforcing forward clinical procedural progression."""
+        n_windows, n_classes = window_probs.shape
+        if n_windows == 0:
+            return np.array([], dtype=int)
+
+        log_probs = np.log(np.clip(window_probs, 1e-12, 1.0))
+        dp = np.full((n_windows, n_classes), -np.inf)
+        backpointer = np.zeros((n_windows, n_classes), dtype=int)
+
+        for c in range(min(4, n_classes)):
+            dp[0, c] = log_probs[0, c]
+
+        for t in range(1, n_windows):
+            for curr_c in range(n_classes):
+                best_prev_c = -1
+                best_val = -np.inf
+
+                for prev_c in range(n_classes):
+                    if curr_c == prev_c:
+                        trans_cost = 0.0
+                    elif curr_c == 0 or prev_c == 0:
+                        trans_cost = -0.5
+                    elif curr_c == prev_c + 1:
+                        trans_cost = 0.0  # natural next step
+                    elif curr_c > prev_c + 1:
+                        trans_cost = -1.0 * (curr_c - prev_c - 1)  # step omission penalty
+                    else:
+                        trans_cost = -100.0  # backward progression forbidden
+
+                    score = dp[t - 1, prev_c] + trans_cost + log_probs[t, curr_c]
+                    if score > best_val:
+                        best_val = score
+                        best_prev_c = prev_c
+
+                dp[t, curr_c] = best_val
+                backpointer[t, curr_c] = best_prev_c
+
+        best_last = int(np.argmax(dp[n_windows - 1]))
+        path = np.zeros(n_windows, dtype=int)
+        path[n_windows - 1] = best_last
+
+        for t in range(n_windows - 2, -1, -1):
+            path[t] = backpointer[t + 1, path[t + 1]]
+
+        return path
 
     def extract_segments(
         self,

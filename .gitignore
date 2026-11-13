@@ -21,8 +21,11 @@ htmlcov/
 *.avi
 *.mov
 *.mkv
+*.wav
 new_videos/
 uploads/
+dataset/audio/
+reports/pdf_pages/
 
 # Documents & raw data
 *.docx
