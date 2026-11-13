@@ -53,50 +53,65 @@ class SessionChecker:
 
         return np.argmax(smoothed_probs, axis=1)
 
-    def viterbi_decode(self, window_probs: np.ndarray) -> np.ndarray:
-        """Dynamic programming Viterbi decoder enforcing forward clinical procedural progression."""
+    def viterbi_decode(self, window_probs: np.ndarray, skip_penalty: float = 1.0) -> np.ndarray:
+        """Dynamic programming Viterbi decoder enforcing forward monotonic clinical progression."""
         n_windows, n_classes = window_probs.shape
         if n_windows == 0:
             return np.array([], dtype=int)
 
         log_probs = np.log(np.clip(window_probs, 1e-12, 1.0))
-        dp = np.full((n_windows, n_classes), -np.inf)
-        backpointer = np.zeros((n_windows, n_classes), dtype=int)
+        # State space: (c, h) where c in 0..13 is current class, h in 0..13 is highest clinical step reached
+        n_states = n_classes * n_classes
+        dp = np.full((n_windows, n_states), -np.inf)
+        backpointer = np.zeros((n_windows, n_states), dtype=int)
 
-        for c in range(min(4, n_classes)):
-            dp[0, c] = log_probs[0, c]
+        for c in range(n_classes):
+            s = c * n_classes + c
+            dp[0, s] = log_probs[0, c]
 
         for t in range(1, n_windows):
-            for curr_c in range(n_classes):
-                best_prev_c = -1
-                best_val = -np.inf
+            for c in range(n_classes):
+                for h in range(n_classes):
+                    s = c * n_classes + h
+                    best_prev_s = -1
+                    best_val = -np.inf
 
-                for prev_c in range(n_classes):
-                    if curr_c == prev_c:
-                        trans_cost = 0.0
-                    elif curr_c == 0 or prev_c == 0:
-                        trans_cost = -0.5
-                    elif curr_c == prev_c + 1:
-                        trans_cost = 0.0  # natural next step
-                    elif curr_c > prev_c + 1:
-                        trans_cost = -1.0 * (curr_c - prev_c - 1)  # step omission penalty
-                    else:
-                        trans_cost = -100.0  # backward progression forbidden
+                    for prev_c in range(n_classes):
+                        for prev_h in range(n_classes):
+                            prev_s = prev_c * n_classes + prev_h
+                            if dp[t - 1, prev_s] == -np.inf:
+                                continue
 
-                    score = dp[t - 1, prev_c] + trans_cost + log_probs[t, curr_c]
-                    if score > best_val:
-                        best_val = score
-                        best_prev_c = prev_c
+                            if c == 0:
+                                if h != prev_h:
+                                    continue
+                                trans_cost = -0.5
+                            else:
+                                if c < prev_h:
+                                    continue  # Strictly forbidden to regress to a lower clinical step
+                                if h != max(prev_h, c):
+                                    continue
+                                if c == prev_c:
+                                    trans_cost = 0.0
+                                elif c == prev_h + 1 or (prev_c == 0 and c == prev_h):
+                                    trans_cost = 0.0
+                                else:
+                                    trans_cost = -skip_penalty * (c - prev_h - 1)
 
-                dp[t, curr_c] = best_val
-                backpointer[t, curr_c] = best_prev_c
+                            score = dp[t - 1, prev_s] + trans_cost + log_probs[t, c]
+                            if score > best_val:
+                                best_val = score
+                                best_prev_s = prev_s
 
-        best_last = int(np.argmax(dp[n_windows - 1]))
+                    dp[t, s] = best_val
+                    backpointer[t, s] = best_prev_s
+
+        best_last_s = int(np.argmax(dp[n_windows - 1]))
         path = np.zeros(n_windows, dtype=int)
-        path[n_windows - 1] = best_last
-
-        for t in range(n_windows - 2, -1, -1):
-            path[t] = backpointer[t + 1, path[t + 1]]
+        curr_s = best_last_s
+        for t in range(n_windows - 1, -1, -1):
+            path[t] = curr_s // n_classes
+            curr_s = backpointer[t, curr_s]
 
         return path
 
