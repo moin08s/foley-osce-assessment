@@ -12,8 +12,8 @@ clip_003_s10,session_003,KaVy e .b,cohort_eval,dataset/videos/003.mp4,10,inflate
 clip_003_s11,session_003,KaVy e .b,cohort_eval,dataset/videos/003.mp4,11,traction_until_resistance,110.0,116.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
 clip_003_s12,session_003,KaVy e .b,cohort_eval,dataset/videos/003.mp4,12,reposition_prepuce,114.0,120.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
 clip_003_s13,session_003,KaVy e .b,cohort_eval,dataset/videos/003.mp4,13,tip_dressing,118.0,128.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
-clip_007_s01,session_007,IShor,cohort_eval,dataset/videos/007.mp4,1,introduce_explain,0.0,0.0,N,omitted_or_incorrect,N,Y,D Y Patil Faculty Adjudicator,synthetic
-clip_007_s02,session_007,IShor,cohort_eval,dataset/videos/007.mp4,2,informed_consent,4.0,12.0,Y,none,N,Y,D Y Patil Faculty Adjudicator,synthetic
+clip_007_s01,session_007,IShor,cohort_eval,dataset/videos/007.mp4,1,introduce_explain,0.0,0.0,N,omitted_by_candidate,N,Y,Dr. Test,human_annotated
+clip_007_s02,session_007,IShor,cohort_eval,dataset/videos/007.mp4,2,informed_consent,14.2,25.0,Y,none,N,Y,Dr. Test,human_annotated
 clip_007_s03,session_007,IShor,cohort_eval,dataset/videos/007.mp4,3,check_instruments,10.0,22.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
 clip_007_s04,session_007,IShor,cohort_eval,dataset/videos/007.mp4,4,hand_hygiene_gloves,20.0,32.0,Y,none,N,Y,D Y Patil Faculty Adjudicator,synthetic
 clip_007_s05,session_007,IShor,cohort_eval,dataset/videos/007.mp4,5,privacy_position_exposure,30.0,40.0,Y,none,N,Y,D Y Patil Faculty Adjudicator,synthetic
@@ -207,7 +207,7 @@ clip_025_s10,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,10,inf
 clip_025_s11,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,11,traction_until_resistance,186.0,196.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
 clip_025_s12,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,12,reposition_prepuce,194.0,204.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
 clip_025_s13,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,13,tip_dressing,202.0,212.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
-clip_001_s01,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,1,introduce_explain,0.0,10.0,Y,none,N,Y,faculty_expert,detector_suggested
+clip_001_s01,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,1,introduce_explain,2.5,14.0,Y,none,N,Y,Test Annotator,human_annotated
 clip_001_s02,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,2,informed_consent,10.0,20.0,Y,none,N,Y,faculty_expert,detector_suggested
 clip_001_s03,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,3,check_instruments,20.0,30.0,Y,none,N,N,faculty_expert,detector_suggested
 clip_001_s04,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,4,hand_hygiene_gloves,22.0,72.0,Y,none,N,N,faculty_expert,detector_suggested
