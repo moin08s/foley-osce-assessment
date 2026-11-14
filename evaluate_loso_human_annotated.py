@@ -117,13 +117,16 @@ def run_loso_human_annotated():
     base_win_acc = float(np.mean(y_true_arr == y_base_arr)) * 100.0
 
     print("-" * 95)
-    print(f"Fitted Time-Position Baseline Window Accuracy on Human-Annotated Sessions: {base_win_acc:.2f}%")
-    print("(Proportions fitted strictly on training folds, evaluated on unseen held-out candidate)")
+    print(f"NOTICE: The previous '26.99%' baseline is INVALID and has been removed from all reports.")
+    print("REASON: It was evaluated on manifest rows pre-filled by automated detector suggestions,")
+    print("not genuine human expert annotations. True baseline evaluation is paused until")
+    print("at least 20 candidate sessions are annotated by human faculty via /annotate.")
     print("-" * 95)
 
     return {
         "n_sessions": len(stems),
-        "baseline_window_accuracy": round(base_win_acc, 2),
+        "status": "PAUSED_PENDING_HUMAN_ANNOTATIONS",
+        "invalidated_prior_baseline": 26.99,
     }
 
 
