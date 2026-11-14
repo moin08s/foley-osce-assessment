@@ -1,0 +1,731 @@
+{
+  "n_folds": 24,
+  "elapsed_seconds": 89.4,
+  "overall_window_accuracy": 22.9,
+  "final_grade_agreement_pct": 25.0,
+  "grade_matches": 6,
+  "comparison": {
+    "task1_baseline_window_acc": 19.99,
+    "task2_ablation_window_acc": 22.55,
+    "task3_augmented_window_acc": 22.6,
+    "task4_128px_window_acc": 22.9,
+    "delta_from_baseline": 2.91
+  },
+  "per_step_metrics": {
+    "0": {
+      "name": "background",
+      "precision": 1.47,
+      "recall": 1.14,
+      "f1": 1.28,
+      "support": 88
+    },
+    "1": {
+      "name": "introduce_explain",
+      "precision": 33.62,
+      "recall": 46.99,
+      "f1": 39.2,
+      "support": 83
+    },
+    "2": {
+      "name": "informed_consent",
+      "precision": 24.68,
+      "recall": 19.79,
+      "f1": 21.97,
+      "support": 96
+    },
+    "3": {
+      "name": "check_instruments",
+      "precision": 23.36,
+      "recall": 18.8,
+      "f1": 20.83,
+      "support": 133
+    },
+    "4": {
+      "name": "hand_hygiene_gloves",
+      "precision": 18.71,
+      "recall": 20.0,
+      "f1": 19.33,
+      "support": 145
+    },
+    "5": {
+      "name": "privacy_position_exposure",
+      "precision": 20.66,
+      "recall": 20.0,
+      "f1": 20.33,
+      "support": 125
+    },
+    "6": {
+      "name": "painting_draping",
+      "precision": 25.8,
+      "recall": 30.17,
+      "f1": 27.81,
+      "support": 242
+    },
+    "7": {
+      "name": "lignocaine_jelly",
+      "precision": 24.61,
+      "recall": 24.48,
+      "f1": 24.54,
+      "support": 192
+    },
+    "8": {
+      "name": "open_catheter_insert",
+      "precision": 29.17,
+      "recall": 28.89,
+      "f1": 29.03,
+      "support": 315
+    },
+    "9": {
+      "name": "attach_urobag_confirm_urine",
+      "precision": 17.44,
+      "recall": 21.43,
+      "f1": 19.23,
+      "support": 140
+    },
+    "10": {
+      "name": "inflate_balloon",
+      "precision": 26.45,
+      "recall": 26.28,
+      "f1": 26.37,
+      "support": 156
+    },
+    "11": {
+      "name": "traction_until_resistance",
+      "precision": 10.64,
+      "recall": 7.81,
+      "f1": 9.01,
+      "support": 64
+    },
+    "12": {
+      "name": "reposition_prepuce",
+      "precision": 13.16,
+      "recall": 6.67,
+      "f1": 8.85,
+      "support": 75
+    },
+    "13": {
+      "name": "tip_dressing",
+      "precision": 15.79,
+      "recall": 17.65,
+      "f1": 16.67,
+      "support": 102
+    }
+  },
+  "step_detection_counts": {
+    "1": {
+      "present": 23,
+      "detected": 19,
+      "sensitivity_pct": 82.6
+    },
+    "2": {
+      "present": 24,
+      "detected": 18,
+      "sensitivity_pct": 75.0
+    },
+    "3": {
+      "present": 22,
+      "detected": 17,
+      "sensitivity_pct": 77.3
+    },
+    "4": {
+      "present": 20,
+      "detected": 19,
+      "sensitivity_pct": 95.0
+    },
+    "5": {
+      "present": 21,
+      "detected": 17,
+      "sensitivity_pct": 81.0
+    },
+    "6": {
+      "present": 22,
+      "detected": 20,
+      "sensitivity_pct": 90.9
+    },
+    "7": {
+      "present": 23,
+      "detected": 19,
+      "sensitivity_pct": 82.6
+    },
+    "8": {
+      "present": 24,
+      "detected": 24,
+      "sensitivity_pct": 100.0
+    },
+    "9": {
+      "present": 23,
+      "detected": 21,
+      "sensitivity_pct": 91.3
+    },
+    "10": {
+      "present": 23,
+      "detected": 19,
+      "sensitivity_pct": 82.6
+    },
+    "11": {
+      "present": 24,
+      "detected": 8,
+      "sensitivity_pct": 33.3
+    },
+    "12": {
+      "present": 22,
+      "detected": 13,
+      "sensitivity_pct": 59.1
+    },
+    "13": {
+      "present": 21,
+      "detected": 14,
+      "sensitivity_pct": 66.7
+    }
+  },
+  "grade_confusion": {
+    "P": {
+      "P": 1,
+      "P-1": 2,
+      "R": 11
+    },
+    "P-1": {
+      "P": 1,
+      "P-1": 0,
+      "R": 4
+    },
+    "R": {
+      "P": 0,
+      "P-1": 0,
+      "R": 5
+    }
+  },
+  "session_results": [
+    {
+      "fold": 1,
+      "held_out_stem": "001",
+      "candidate_name": "KaiV",
+      "win_accuracy": 21.794871794871796,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "9/13 (69.2%)",
+      "detected_steps": [
+        1,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "fold": 2,
+      "held_out_stem": "002",
+      "candidate_name": "yajw,",
+      "win_accuracy": 27.956989247311824,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "11/13 (84.6%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12
+      ]
+    },
+    {
+      "fold": 3,
+      "held_out_stem": "003",
+      "candidate_name": "KaVy e .b",
+      "win_accuracy": 23.809523809523807,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "10/13 (76.9%)",
+      "detected_steps": [
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "fold": 4,
+      "held_out_stem": "004",
+      "candidate_name": "Vaj.Jos",
+      "win_accuracy": 29.464285714285715,
+      "teacher_grade": "P",
+      "model_grade": "P-1",
+      "matched": false,
+      "score": "12/13 (92.3%)",
+      "detected_steps": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 5,
+      "held_out_stem": "005",
+      "candidate_name": "PAagya.K",
+      "win_accuracy": 22.82608695652174,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "11/13 (84.6%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 6,
+      "held_out_stem": "007",
+      "candidate_name": "IShor",
+      "win_accuracy": 36.0655737704918,
+      "teacher_grade": "P-1",
+      "model_grade": "R",
+      "matched": false,
+      "score": "11/13 (84.6%)",
+      "detected_steps": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 7,
+      "held_out_stem": "008",
+      "candidate_name": "Rahu",
+      "win_accuracy": 17.307692307692307,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "10/13 (76.9%)",
+      "detected_steps": [
+        1,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 8,
+      "held_out_stem": "009",
+      "candidate_name": "Rudra",
+      "win_accuracy": 18.81188118811881,
+      "teacher_grade": "P-1",
+      "model_grade": "P",
+      "matched": false,
+      "score": "13/13 (100.0%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 9,
+      "held_out_stem": "010",
+      "candidate_name": "Gauray",
+      "win_accuracy": 30.681818181818183,
+      "teacher_grade": "P",
+      "model_grade": "P-1",
+      "matched": false,
+      "score": "12/13 (92.3%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 10,
+      "held_out_stem": "011",
+      "candidate_name": "Shiyram",
+      "win_accuracy": 9.473684210526317,
+      "teacher_grade": "P-1",
+      "model_grade": "R",
+      "matched": false,
+      "score": "8/13 (61.5%)",
+      "detected_steps": [
+        1,
+        2,
+        4,
+        6,
+        7,
+        8,
+        9,
+        11
+      ]
+    },
+    {
+      "fold": 11,
+      "held_out_stem": "012",
+      "candidate_name": "Nikuna",
+      "win_accuracy": 17.647058823529413,
+      "teacher_grade": "R",
+      "model_grade": "R",
+      "matched": true,
+      "score": "9/13 (69.2%)",
+      "detected_steps": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "fold": 12,
+      "held_out_stem": "013",
+      "candidate_name": "Candidate_013",
+      "win_accuracy": 25.925925925925924,
+      "teacher_grade": "R",
+      "model_grade": "R",
+      "matched": true,
+      "score": "9/13 (69.2%)",
+      "detected_steps": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 13,
+      "held_out_stem": "014",
+      "candidate_name": "DrRnura",
+      "win_accuracy": 27.43362831858407,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "8/13 (61.5%)",
+      "detected_steps": [
+        1,
+        3,
+        4,
+        6,
+        8,
+        9,
+        10,
+        13
+      ]
+    },
+    {
+      "fold": 14,
+      "held_out_stem": "015",
+      "candidate_name": "Vafsal",
+      "win_accuracy": 28.04878048780488,
+      "teacher_grade": "P",
+      "model_grade": "P",
+      "matched": true,
+      "score": "13/13 (100.0%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 15,
+      "held_out_stem": "016",
+      "candidate_name": "AshwaMudra",
+      "win_accuracy": 16.216216216216218,
+      "teacher_grade": "R",
+      "model_grade": "R",
+      "matched": true,
+      "score": "10/13 (76.9%)",
+      "detected_steps": [
+        1,
+        2,
+        4,
+        5,
+        7,
+        8,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 16,
+      "held_out_stem": "017",
+      "candidate_name": "Virinchy",
+      "win_accuracy": 20.0,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "10/13 (76.9%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 17,
+      "held_out_stem": "018",
+      "candidate_name": "Candidate_018",
+      "win_accuracy": 22.388059701492537,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "11/13 (84.6%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        12,
+        13
+      ]
+    },
+    {
+      "fold": 18,
+      "held_out_stem": "019",
+      "candidate_name": "Candidate_019",
+      "win_accuracy": 20.833333333333336,
+      "teacher_grade": "P-1",
+      "model_grade": "R",
+      "matched": false,
+      "score": "9/13 (69.2%)",
+      "detected_steps": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        13
+      ]
+    },
+    {
+      "fold": 19,
+      "held_out_stem": "020",
+      "candidate_name": "kan",
+      "win_accuracy": 17.75700934579439,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "9/13 (69.2%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "fold": 20,
+      "held_out_stem": "021",
+      "candidate_name": "VoiswwaWi",
+      "win_accuracy": 35.294117647058826,
+      "teacher_grade": "R",
+      "model_grade": "R",
+      "matched": true,
+      "score": "8/13 (61.5%)",
+      "detected_steps": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "fold": 21,
+      "held_out_stem": "022",
+      "candidate_name": "KA-+",
+      "win_accuracy": 15.384615384615385,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "11/13 (84.6%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        13
+      ]
+    },
+    {
+      "fold": 22,
+      "held_out_stem": "023",
+      "candidate_name": "Candidate_023",
+      "win_accuracy": 25.0,
+      "teacher_grade": "R",
+      "model_grade": "R",
+      "matched": true,
+      "score": "10/13 (76.9%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "fold": 23,
+      "held_out_stem": "024",
+      "candidate_name": "Candidate_024",
+      "win_accuracy": 31.25,
+      "teacher_grade": "P-1",
+      "model_grade": "R",
+      "matched": false,
+      "score": "7/13 (53.8%)",
+      "detected_steps": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "fold": 24,
+      "held_out_stem": "025",
+      "candidate_name": "Candidate_025",
+      "win_accuracy": 16.19047619047619,
+      "teacher_grade": "P",
+      "model_grade": "R",
+      "matched": false,
+      "score": "11/13 (84.6%)",
+      "detected_steps": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13
+      ]
+    }
+  ]
+}

@@ -40,3 +40,5 @@ models/test_model.npz
 # Temporary logs
 *.log
 tmp/
+
+dataset/features_128px/
