@@ -582,29 +582,5 @@
       "12": "Pass",
       "13": "Pass"
     }
-  },
-  "025": {
-    "stem": "025",
-    "video_file": "C:\\New folder (2)\\103NZ_30\\025(1).MP4",
-    "audio_file": "C:\\Medical\\dataset\\audio\\025(1).wav",
-    "candidate_name": "Candidate_025",
-    "faculty_grade": "P",
-    "missing_steps": [],
-    "prompted_steps": [],
-    "step_results": {
-      "1": "Pass",
-      "2": "Pass",
-      "3": "Pass",
-      "4": "Pass",
-      "5": "Pass",
-      "6": "Pass",
-      "7": "Pass",
-      "8": "Pass",
-      "9": "Pass",
-      "10": "Pass",
-      "11": "Pass",
-      "12": "Pass",
-      "13": "Pass"
-    }
   }
 }
