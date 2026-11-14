@@ -42,3 +42,4 @@ models/test_model.npz
 tmp/
 
 dataset/features_128px/
+backups/
