@@ -1,28 +1,36 @@
-"""Task 4: Update Faculty OSCE Checklist Generator.
-
-Requirements:
-1. Replace start-end span with "first signal at mm:ss".
-2. Add "Reliability" column (Low for steps 4, 6, 10; High for step 9; N/A for unverified).
-3. Contradiction suppression: Never show FOUND for a step the faculty sheet contradicts
-   in the evaluation set; show it as a known failure / false alarm.
-"""
+"""Update Faculty OSCE Checklists with dual metrics and new reliability labels."""
 
 import os
 import json
-import csv
 import numpy as np
 
 from src.data_loader import STEP_LABELS
 
-MANIFEST_PATH = r"C:\Medical\foley_cohort_manifest.csv"
-FEATURE_DIR = r"C:\Medical\dataset\features_128px"
 GT_PATH = r"C:\Medical\dataset\cohort_ground_truth.json"
+FEATURE_DIR = r"C:\Medical\dataset\features_128px"
 CHECKLIST_DIR = r"C:\Medical\reports\checklists"
 
 def format_sec(sec: float) -> str:
     m = int(sec // 60)
     s = int(sec % 60)
     return f"{m:02d}:{s:02d}"
+
+# Reliability under new criteria
+RELIABILITY = {
+    1: "Untested/Low (1 neg sample)",
+    2: "No negative data",
+    3: "Untested/Low (2 neg samples)",
+    4: "Untested/Low (4 neg samples, 50.0% False-Alarm Rate)",
+    5: "Untested/Low (3 neg samples)",
+    6: "Untested/Low (2 neg samples, 50.0% False-Alarm Rate)",
+    7: "Untested/Low (1 neg sample)",
+    8: "No negative data",
+    9: "Untested/Low (1 neg sample, 54.5% Sensitivity)",
+    10: "Untested/Low (1 neg sample, 100.0% False-Alarm Rate)",
+    11: "No negative data",
+    12: "Untested/Low (2 neg samples)",
+    13: "Untested/Low (3 neg samples)",
+}
 
 def get_rule_detections(stem: str):
     feat_file = os.path.join(FEATURE_DIR, f"{stem}_feat.npz")
@@ -54,7 +62,6 @@ def get_rule_detections(stem: str):
                 "first_signal_sec": float(idxs[0] * 2.0),
                 "evidence": f"{np.max(glove_early)*100:.1f}% peak white reflection",
                 "source": "Glove Colour Detector",
-                "reliability": "Low (50% False-Alarm Rate)",
             }
 
     # Step 6: Green Drape
@@ -65,7 +72,6 @@ def get_rule_detections(stem: str):
             "first_signal_sec": float(idxs[0] * 2.0),
             "evidence": f"{np.max(green_drape)*1000:.1f} per-mille green drape coverage",
             "source": "Green Drape Detector",
-            "reliability": "Low (50% False-Alarm Rate on field movements)",
         }
 
     # Step 9: Yellow Fluid
@@ -79,7 +85,6 @@ def get_rule_detections(stem: str):
                 "first_signal_sec": float((idxs[0] + mid_start) * 2.0),
                 "evidence": f"{np.max(u_window)*1000:.1f} per-mille yellow urine flash",
                 "source": "Urine Yellow Detector",
-                "reliability": "High (0% False-Alarm Rate)",
             }
 
     # Step 10: Pelvic Motion (Syringe Proxy)
@@ -91,7 +96,6 @@ def get_rule_detections(stem: str):
                 "first_signal_sec": float((idxs[0] + mid_start) * 2.0),
                 "evidence": f"{np.max(pelvic)*100:.1f}% pelvic motion burst",
                 "source": "Pelvic Motion Detector (Syringe Proxy)",
-                "reliability": "Low (100% False-Alarm Rate on Step 10 Omissions)",
             }
 
     return detections
@@ -110,16 +114,15 @@ def generate_checklist(stem: str):
 
     for sid in range(1, 14):
         sname = STEP_LABELS[sid]
+        rel = RELIABILITY[sid]
         is_contradicted_by_faculty = (sid in missing_steps)
 
         if sid in rule_dets:
             det = rule_dets[sid]
             first_sig = format_sec(det["first_signal_sec"])
-            rel = det["reliability"]
 
             if is_contradicted_by_faculty:
-                # Contradiction: Detector fired, but faculty confirmed step was MISSED
-                status = "KNOWN FAILURE / FALSE ALARM"
+                status = "KNOWN FAILURE / FALSE ALARM (Suppressed)"
                 evidence = f"Signal detected ({det['evidence']}), but contradicted by faculty ground truth (Resident missed step)"
                 source = f"{det['source']} (Contradicted)"
             else:
@@ -128,7 +131,6 @@ def generate_checklist(stem: str):
                 source = det["source"]
         else:
             first_sig = "—"
-            rel = "—"
             status = "NOT VERIFIED"
             evidence = "No detector signal"
             source = "Uninstrumented"
@@ -143,13 +145,16 @@ def generate_checklist(stem: str):
             "source": source
         })
 
-    # Render Markdown table
     md = []
     md.append(f"# D Y PATIL MEDICAL COLLEGE & HOSPITAL")
     md.append(f"### Male Foley Catheterization OSCE - Verified Faculty Checklist")
     md.append(f"**Candidate:** Resident-{stem} ({cand_name}) | **Faculty Ground-Truth Grade:** {fac_grade}\n")
     md.append(f"> [!IMPORTANT]")
-    md.append(f"> **Audit Policy:** Start-end spans replaced with single 'First Signal' timestamp. Detectors with known false-alarm issues (Steps 4, 6, 10) are explicitly marked **Low Reliability**. If faculty records a step as missed, any detector firing is flagged as a **KNOWN FAILURE / FALSE ALARM** rather than claiming success.\n")
+    md.append(f"> **Audit & Evaluation Policy:**")
+    md.append(f"> 1. **Detector Metrics (Reported Twice):**")
+    md.append(f">    - **Real Use (Without Contradiction Suppression):** Step 4 False-Alarm = 50.0% (2/4), Step 6 False-Alarm = 50.0% (1/2), Step 9 False-Alarm = 0.0% (0/1), Step 10 False-Alarm = 100.0% (1/1).")
+    md.append(f">    - **With Contradiction Suppression:** Apparent False-Alarm = 0.0% across all steps because the faculty sheet overrides false alarms.")
+    md.append(f"> 2. **Reliability Definition:** 'High' requires testing on >= 5 negative sessions AND sensitivity >= 90%. Steps 2, 8, 11 have 'No negative data'. All other steps are 'Untested/Low'.\n")
 
     md.append(f"| Step | Clinical Step Name | AI Status | First Signal | Reliability | Measured Signal Evidence | Evidence Source | Faculty Confirmation |")
     md.append(f"| :---: | :--- | :---: | :---: | :---: | :--- | :--- | :---: |")
@@ -172,11 +177,6 @@ def generate_checklist(stem: str):
     return rows
 
 if __name__ == "__main__":
-    print("Generating updated checklists for spot-check videos (007, 011, 012, 016, 021)...")
     for s in ["007", "011", "012", "016", "021"]:
-        rows = generate_checklist(s)
-        # Check if contradiction was flagged
-        contra = [r for r in rows if "KNOWN FAILURE" in r["status"]]
-        print(f"Candidate {s}: {len(contra)} known failures/false alarms flagged. Checklist saved to {CHECKLIST_DIR}\\Verified_Checklist_{s}.md")
-        for c in contra:
-            print(f"  -> Flagged Step {c['sid']} ({c['name']}): First Signal at {c['first_sig']}, Reliability: {c['rel']}")
+        generate_checklist(s)
+    print("Checklists updated with dual metrics and strict reliability criteria.")
