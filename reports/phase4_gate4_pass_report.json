@@ -1,0 +1,774 @@
+{
+  "Time-Position Baseline (Phase 2)": {
+    "window_accuracy": 67.48,
+    "segment_detection_accuracy": 65.23,
+    "grade_agreement_pct": 56.52,
+    "grade_matches": 13,
+    "status": "[BASELINE FLOOR]",
+    "per_candidate": [
+      {
+        "stem": "001",
+        "name": "KaiV",
+        "win_acc": 79.49,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "002",
+        "name": "yajw,",
+        "win_acc": 81.72,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "003",
+        "name": "KaVy e .b",
+        "win_acc": 63.49,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "004",
+        "name": "Vaj.Jos",
+        "win_acc": 75.0,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "005",
+        "name": "PAagya.K",
+        "win_acc": 86.96,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "007",
+        "name": "IShor",
+        "win_acc": 39.34,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "008",
+        "name": "Rahu",
+        "win_acc": 75.96,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "009",
+        "name": "Rudra",
+        "win_acc": 36.63,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "010",
+        "name": "Gauray",
+        "win_acc": 77.27,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "011",
+        "name": "Shiyram",
+        "win_acc": 73.68,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "012",
+        "name": "Nikuna",
+        "win_acc": 32.35,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "013",
+        "name": "Candidate_013",
+        "win_acc": 55.56,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "014",
+        "name": "DrRnura",
+        "win_acc": 86.73,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "015",
+        "name": "Vafsal",
+        "win_acc": 86.59,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "016",
+        "name": "AshwaMudra",
+        "win_acc": 62.16,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "017",
+        "name": "Virinchy",
+        "win_acc": 75.71,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "018",
+        "name": "Candidate_018",
+        "win_acc": 49.25,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "019",
+        "name": "Candidate_019",
+        "win_acc": 44.44,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "020",
+        "name": "kan",
+        "win_acc": 82.24,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "021",
+        "name": "VoiswwaWi",
+        "win_acc": 75.0,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "022",
+        "name": "KA-+",
+        "win_acc": 84.62,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "023",
+        "name": "Candidate_023",
+        "win_acc": 16.18,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "024",
+        "name": "Candidate_024",
+        "win_acc": 43.75,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      }
+    ]
+  },
+  "1. MLP + 8-D Temporal Harmonic Encodings": {
+    "window_accuracy": 54.35,
+    "segment_detection_accuracy": 60.22,
+    "grade_agreement_pct": 21.74,
+    "grade_matches": 5,
+    "status": "Below Baseline",
+    "per_candidate": [
+      {
+        "stem": "001",
+        "name": "KaiV",
+        "win_acc": 55.13,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "002",
+        "name": "yajw,",
+        "win_acc": 64.52,
+        "faculty_grade": "P",
+        "model_grade": "P-1",
+        "matched": false
+      },
+      {
+        "stem": "003",
+        "name": "KaVy e .b",
+        "win_acc": 69.84,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "004",
+        "name": "Vaj.Jos",
+        "win_acc": 79.46,
+        "faculty_grade": "P",
+        "model_grade": "P-1",
+        "matched": false
+      },
+      {
+        "stem": "005",
+        "name": "PAagya.K",
+        "win_acc": 60.87,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "007",
+        "name": "IShor",
+        "win_acc": 36.07,
+        "faculty_grade": "P-1",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "008",
+        "name": "Rahu",
+        "win_acc": 55.77,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "009",
+        "name": "Rudra",
+        "win_acc": 45.54,
+        "faculty_grade": "P-1",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "010",
+        "name": "Gauray",
+        "win_acc": 59.09,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "011",
+        "name": "Shiyram",
+        "win_acc": 29.47,
+        "faculty_grade": "P-1",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "012",
+        "name": "Nikuna",
+        "win_acc": 32.35,
+        "faculty_grade": "R",
+        "model_grade": "R",
+        "matched": true
+      },
+      {
+        "stem": "013",
+        "name": "Candidate_013",
+        "win_acc": 59.26,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "014",
+        "name": "DrRnura",
+        "win_acc": 66.37,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "015",
+        "name": "Vafsal",
+        "win_acc": 54.88,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "016",
+        "name": "AshwaMudra",
+        "win_acc": 50.0,
+        "faculty_grade": "R",
+        "model_grade": "P-1",
+        "matched": false
+      },
+      {
+        "stem": "017",
+        "name": "Virinchy",
+        "win_acc": 58.57,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "018",
+        "name": "Candidate_018",
+        "win_acc": 49.25,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "019",
+        "name": "Candidate_019",
+        "win_acc": 52.78,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "020",
+        "name": "kan",
+        "win_acc": 56.07,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "021",
+        "name": "VoiswwaWi",
+        "win_acc": 58.82,
+        "faculty_grade": "R",
+        "model_grade": "R",
+        "matched": true
+      },
+      {
+        "stem": "022",
+        "name": "KA-+",
+        "win_acc": 69.23,
+        "faculty_grade": "P",
+        "model_grade": "R",
+        "matched": false
+      },
+      {
+        "stem": "023",
+        "name": "Candidate_023",
+        "win_acc": 11.76,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "024",
+        "name": "Candidate_024",
+        "win_acc": 39.06,
+        "faculty_grade": "P-1",
+        "model_grade": "R",
+        "matched": false
+      }
+    ]
+  },
+  "2. Bayesian Prior Fusion (MLP * Time Prior)": {
+    "window_accuracy": 70.77,
+    "segment_detection_accuracy": 71.33,
+    "grade_agreement_pct": 60.87,
+    "grade_matches": 14,
+    "status": "PASSED (Beats Baseline)",
+    "per_candidate": [
+      {
+        "stem": "001",
+        "name": "KaiV",
+        "win_acc": 83.33,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "002",
+        "name": "yajw,",
+        "win_acc": 83.87,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "003",
+        "name": "KaVy e .b",
+        "win_acc": 71.43,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "004",
+        "name": "Vaj.Jos",
+        "win_acc": 83.04,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "005",
+        "name": "PAagya.K",
+        "win_acc": 89.13,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "007",
+        "name": "IShor",
+        "win_acc": 39.34,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "008",
+        "name": "Rahu",
+        "win_acc": 82.69,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "009",
+        "name": "Rudra",
+        "win_acc": 43.56,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "010",
+        "name": "Gauray",
+        "win_acc": 80.68,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "011",
+        "name": "Shiyram",
+        "win_acc": 76.84,
+        "faculty_grade": "P-1",
+        "model_grade": "P-1",
+        "matched": true
+      },
+      {
+        "stem": "012",
+        "name": "Nikuna",
+        "win_acc": 23.53,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "013",
+        "name": "Candidate_013",
+        "win_acc": 59.26,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "014",
+        "name": "DrRnura",
+        "win_acc": 88.5,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "015",
+        "name": "Vafsal",
+        "win_acc": 90.24,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "016",
+        "name": "AshwaMudra",
+        "win_acc": 63.51,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "017",
+        "name": "Virinchy",
+        "win_acc": 84.29,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "018",
+        "name": "Candidate_018",
+        "win_acc": 56.72,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "019",
+        "name": "Candidate_019",
+        "win_acc": 48.61,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "020",
+        "name": "kan",
+        "win_acc": 84.11,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "021",
+        "name": "VoiswwaWi",
+        "win_acc": 73.53,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "022",
+        "name": "KA-+",
+        "win_acc": 87.91,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "023",
+        "name": "Candidate_023",
+        "win_acc": 16.18,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "024",
+        "name": "Candidate_024",
+        "win_acc": 39.06,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      }
+    ]
+  },
+  "3. Full Hybrid Architecture (Bayesian + Viterbi)": {
+    "window_accuracy": 70.93,
+    "segment_detection_accuracy": 70.25,
+    "grade_agreement_pct": 60.87,
+    "grade_matches": 14,
+    "status": "PASSED (Beats Baseline)",
+    "per_candidate": [
+      {
+        "stem": "001",
+        "name": "KaiV",
+        "win_acc": 82.05,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "002",
+        "name": "yajw,",
+        "win_acc": 83.87,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "003",
+        "name": "KaVy e .b",
+        "win_acc": 71.43,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "004",
+        "name": "Vaj.Jos",
+        "win_acc": 83.04,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "005",
+        "name": "PAagya.K",
+        "win_acc": 89.13,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "007",
+        "name": "IShor",
+        "win_acc": 39.34,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "008",
+        "name": "Rahu",
+        "win_acc": 82.69,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "009",
+        "name": "Rudra",
+        "win_acc": 44.55,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "010",
+        "name": "Gauray",
+        "win_acc": 80.68,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "011",
+        "name": "Shiyram",
+        "win_acc": 75.79,
+        "faculty_grade": "P-1",
+        "model_grade": "P-1",
+        "matched": true
+      },
+      {
+        "stem": "012",
+        "name": "Nikuna",
+        "win_acc": 26.47,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "013",
+        "name": "Candidate_013",
+        "win_acc": 59.26,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "014",
+        "name": "DrRnura",
+        "win_acc": 89.38,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "015",
+        "name": "Vafsal",
+        "win_acc": 90.24,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "016",
+        "name": "AshwaMudra",
+        "win_acc": 63.51,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "017",
+        "name": "Virinchy",
+        "win_acc": 84.29,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "018",
+        "name": "Candidate_018",
+        "win_acc": 58.21,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "019",
+        "name": "Candidate_019",
+        "win_acc": 48.61,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "020",
+        "name": "kan",
+        "win_acc": 85.05,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "021",
+        "name": "VoiswwaWi",
+        "win_acc": 73.53,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "022",
+        "name": "KA-+",
+        "win_acc": 87.91,
+        "faculty_grade": "P",
+        "model_grade": "P",
+        "matched": true
+      },
+      {
+        "stem": "023",
+        "name": "Candidate_023",
+        "win_acc": 16.18,
+        "faculty_grade": "R",
+        "model_grade": "P",
+        "matched": false
+      },
+      {
+        "stem": "024",
+        "name": "Candidate_024",
+        "win_acc": 39.06,
+        "faculty_grade": "P-1",
+        "model_grade": "P",
+        "matched": false
+      }
+    ]
+  }
+}
