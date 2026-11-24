@@ -1,0 +1,66 @@
+video,step_id,step_label,status,start_sec,end_sec,prompt_time_sec,prompt_step,annotator_name,notes
+001.MP4,1,introduce_explain,done,2.8,9.5,,,Annotator B,Intro
+001.MP4,2,informed_consent,done,9.5,17.0,,,Annotator B,Consent
+001.MP4,3,check_instruments,done,17.0,27.5,,,Annotator B,Tray items checked
+001.MP4,4,hand_hygiene_gloves,done,27.5,43.0,,,Annotator B,Gloves donned
+001.MP4,5,privacy_position_exposure,done,43.0,51.0,,,Annotator B,Positioning
+001.MP4,6,painting_draping,done,51.0,73.5,,,Annotator B,Antiseptic swab & drape
+001.MP4,7,lignocaine_jelly,done,73.5,84.5,,,Annotator B,Jelly applied
+001.MP4,8,open_catheter_insert,done,84.5,107.0,,,Annotator B,Catheter in
+001.MP4,9,attach_urobag_confirm_urine,done,107.0,119.0,,,Annotator B,Urobag
+001.MP4,10,inflate_balloon,done,119.0,131.0,,,Annotator B,Bulb water
+001.MP4,11,traction_until_resistance,done,131.0,138.5,,,Annotator B,Traction resistance
+001.MP4,12,reposition_prepuce,done,138.5,146.5,,,Annotator B,Foreskin forward
+001.MP4,13,tip_dressing,done,146.5,156.5,,,Annotator B,Dressing taped
+007.MP4,1,introduce_explain,missed,,,,,Annotator B,Did not introduce self to patient
+007.MP4,2,informed_consent,done,2.5,14.5,,,Annotator B,Consent asked directly
+007.MP4,3,check_instruments,done,14.5,27.0,,,Annotator B,Tray checked
+007.MP4,4,hand_hygiene_gloves,done,27.0,41.0,,,Annotator B,Gloves
+007.MP4,5,privacy_position_exposure,done,41.0,49.0,,,Annotator B,Positioning
+007.MP4,6,painting_draping,done,49.0,69.0,,,Annotator B,Draping
+007.MP4,7,lignocaine_jelly,done,69.0,79.0,,,Annotator B,Lignocaine
+007.MP4,8,open_catheter_insert,done,79.0,97.0,,,Annotator B,Insertion
+007.MP4,9,attach_urobag_confirm_urine,done,97.0,105.0,,,Annotator B,Urobag
+007.MP4,10,inflate_balloon,done,105.0,113.0,,,Annotator B,Balloon
+007.MP4,11,traction_until_resistance,done,113.0,117.0,,,Annotator B,Traction
+007.MP4,12,reposition_prepuce,done,117.0,121.0,,,Annotator B,Prepuce
+007.MP4,13,tip_dressing,done,121.0,123.5,,,Annotator B,Dressing
+012.MP4,1,introduce_explain,done,2.2,8.5,,,Annotator B,Intro
+012.MP4,2,informed_consent,done,8.5,16.5,,,Annotator B,Consent
+012.MP4,3,check_instruments,missed,,,,,Annotator B,Tray check omitted
+012.MP4,4,hand_hygiene_gloves,missed,,,,,Annotator B,Sterile hygiene breach
+012.MP4,5,privacy_position_exposure,missed,,,,,Annotator B,Privacy exposure omitted
+012.MP4,6,painting_draping,missed,,,,,Annotator B,Draping omitted
+012.MP4,7,lignocaine_jelly,done,16.5,29.0,,,Annotator B,Jelly
+012.MP4,8,open_catheter_insert,done,29.0,53.0,,,Annotator B,Insertion
+012.MP4,9,attach_urobag_confirm_urine,missed,,,,,Annotator B,Urobag check omitted
+012.MP4,10,inflate_balloon,missed,,,,,Annotator B,Bulb omitted
+012.MP4,11,traction_until_resistance,done,53.0,59.0,,,Annotator B,Tug
+012.MP4,12,reposition_prepuce,done,59.0,64.5,,,Annotator B,Prepuce
+012.MP4,13,tip_dressing,done,64.5,69.5,,,Annotator B,Tape
+016.MP4,1,introduce_explain,done,2.8,9.5,,,Annotator B,Intro
+016.MP4,2,informed_consent,done,9.5,18.5,,,Annotator B,Consent
+016.MP4,3,check_instruments,done,18.5,31.0,,,Annotator B,Tray
+016.MP4,4,hand_hygiene_gloves,missed,,,,,Annotator B,Glove contamination
+016.MP4,5,privacy_position_exposure,done,31.0,43.0,,,Annotator B,Exposure
+016.MP4,6,painting_draping,done,43.0,69.0,,,Annotator B,Drape
+016.MP4,7,lignocaine_jelly,done,69.0,81.0,,,Annotator B,Jelly
+016.MP4,8,open_catheter_insert,done,81.0,105.0,,,Annotator B,Catheter
+016.MP4,9,attach_urobag_confirm_urine,done,105.0,119.0,,,Annotator B,Urobag
+016.MP4,10,inflate_balloon,done,119.0,131.0,,,Annotator B,Balloon
+016.MP4,11,traction_until_resistance,done,131.0,137.0,,,Annotator B,Traction
+016.MP4,12,reposition_prepuce,done,137.0,145.0,,,Annotator B,Prepuce
+016.MP4,13,tip_dressing,missed,,,,,Annotator B,Tip dressing omitted
+021.MP4,1,introduce_explain,done,2.4,9.0,,,Annotator B,Intro
+021.MP4,2,informed_consent,done,9.0,16.5,,,Annotator B,Consent
+021.MP4,3,check_instruments,done,16.5,27.0,,,Annotator B,Tray
+021.MP4,4,hand_hygiene_gloves,done,27.0,41.0,,,Annotator B,Gloves
+021.MP4,5,privacy_position_exposure,done,41.0,49.0,,,Annotator B,Exposure
+021.MP4,6,painting_draping,done,49.0,69.0,,,Annotator B,Drape
+021.MP4,7,lignocaine_jelly,done,69.0,79.0,,,Annotator B,Jelly
+021.MP4,8,open_catheter_insert,done,79.0,99.0,,,Annotator B,Insertion
+021.MP4,9,attach_urobag_confirm_urine,done,99.0,109.0,,,Annotator B,Urobag
+021.MP4,10,inflate_balloon,done,109.0,119.0,,,Annotator B,Balloon
+021.MP4,11,traction_until_resistance,done,119.0,125.0,,,Annotator B,Traction
+021.MP4,12,reposition_prepuce,missed,,,,,Annotator B,Foreskin not reduced
+021.MP4,13,tip_dressing,missed,,,,,Annotator B,Catheter dressing not applied

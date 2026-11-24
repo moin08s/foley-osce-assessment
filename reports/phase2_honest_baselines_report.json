@@ -1,0 +1,400 @@
+{
+  "evaluation_protocol": "Leave-One-Candidate-Out (LOSO) Cross-Validation",
+  "ground_truth_source": "human_annotated (human_annotation_sheet.csv)",
+  "cohort_size": 23,
+  "metrics": {
+    "time_position_baseline_window_accuracy": 68.9,
+    "time_position_baseline_segment_accuracy_4s": 63.44,
+    "majority_grade_baseline_agreement": 56.52,
+    "majority_grade_correct_count": 13,
+    "majority_grade_total": 23
+  },
+  "per_step_distribution": {
+    "1": {
+      "label": "introduce_explain",
+      "done_count": 22,
+      "missed_count": 1,
+      "missed_sessions": [
+        "007"
+      ]
+    },
+    "2": {
+      "label": "informed_consent",
+      "done_count": 23,
+      "missed_count": 0,
+      "missed_sessions": []
+    },
+    "3": {
+      "label": "check_instruments",
+      "done_count": 21,
+      "missed_count": 2,
+      "missed_sessions": [
+        "012",
+        "023"
+      ]
+    },
+    "4": {
+      "label": "hand_hygiene_gloves",
+      "done_count": 19,
+      "missed_count": 4,
+      "missed_sessions": [
+        "012",
+        "013",
+        "016",
+        "023"
+      ]
+    },
+    "5": {
+      "label": "privacy_position_exposure",
+      "done_count": 20,
+      "missed_count": 3,
+      "missed_sessions": [
+        "012",
+        "013",
+        "023"
+      ]
+    },
+    "6": {
+      "label": "painting_draping",
+      "done_count": 21,
+      "missed_count": 2,
+      "missed_sessions": [
+        "009",
+        "012"
+      ]
+    },
+    "7": {
+      "label": "lignocaine_jelly",
+      "done_count": 22,
+      "missed_count": 1,
+      "missed_sessions": [
+        "023"
+      ]
+    },
+    "8": {
+      "label": "open_catheter_insert",
+      "done_count": 23,
+      "missed_count": 0,
+      "missed_sessions": []
+    },
+    "9": {
+      "label": "attach_urobag_confirm_urine",
+      "done_count": 22,
+      "missed_count": 1,
+      "missed_sessions": [
+        "012"
+      ]
+    },
+    "10": {
+      "label": "inflate_balloon",
+      "done_count": 22,
+      "missed_count": 1,
+      "missed_sessions": [
+        "012"
+      ]
+    },
+    "11": {
+      "label": "traction_until_resistance",
+      "done_count": 23,
+      "missed_count": 0,
+      "missed_sessions": []
+    },
+    "12": {
+      "label": "reposition_prepuce",
+      "done_count": 21,
+      "missed_count": 2,
+      "missed_sessions": [
+        "013",
+        "021"
+      ]
+    },
+    "13": {
+      "label": "tip_dressing",
+      "done_count": 20,
+      "missed_count": 3,
+      "missed_sessions": [
+        "011",
+        "016",
+        "021"
+      ]
+    }
+  },
+  "candidate_results": [
+    {
+      "stem": "001",
+      "name": "KaiV",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 77,
+      "window_acc": 83.11688311688312,
+      "segment_hits": 12,
+      "segment_total": 13,
+      "segment_acc": 92.3076923076923
+    },
+    {
+      "stem": "002",
+      "name": "yajw,",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 92,
+      "window_acc": 79.34782608695652,
+      "segment_hits": 9,
+      "segment_total": 13,
+      "segment_acc": 69.23076923076923
+    },
+    {
+      "stem": "003",
+      "name": "KaVy e .b",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 63,
+      "window_acc": 65.07936507936508,
+      "segment_hits": 6,
+      "segment_total": 13,
+      "segment_acc": 46.15384615384615
+    },
+    {
+      "stem": "004",
+      "name": "Vaj.Jos",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 110,
+      "window_acc": 90.9090909090909,
+      "segment_hits": 13,
+      "segment_total": 13,
+      "segment_acc": 100.0
+    },
+    {
+      "stem": "005",
+      "name": "PAagya.K",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 91,
+      "window_acc": 85.71428571428571,
+      "segment_hits": 12,
+      "segment_total": 13,
+      "segment_acc": 92.3076923076923
+    },
+    {
+      "stem": "007",
+      "name": "IShor",
+      "true_grade": "P-1",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 61,
+      "window_acc": 37.704918032786885,
+      "segment_hits": 3,
+      "segment_total": 12,
+      "segment_acc": 25.0
+    },
+    {
+      "stem": "008",
+      "name": "Rahu",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 103,
+      "window_acc": 85.43689320388349,
+      "segment_hits": 11,
+      "segment_total": 13,
+      "segment_acc": 84.61538461538461
+    },
+    {
+      "stem": "009",
+      "name": "Rudra",
+      "true_grade": "P-1",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 100,
+      "window_acc": 38.0,
+      "segment_hits": 6,
+      "segment_total": 12,
+      "segment_acc": 50.0
+    },
+    {
+      "stem": "010",
+      "name": "Gauray",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 87,
+      "window_acc": 82.75862068965517,
+      "segment_hits": 13,
+      "segment_total": 13,
+      "segment_acc": 100.0
+    },
+    {
+      "stem": "011",
+      "name": "Shiyram",
+      "true_grade": "P-1",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 93,
+      "window_acc": 79.56989247311827,
+      "segment_hits": 8,
+      "segment_total": 12,
+      "segment_acc": 66.66666666666666
+    },
+    {
+      "stem": "012",
+      "name": "Nikuna",
+      "true_grade": "R",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 34,
+      "window_acc": 26.47058823529412,
+      "segment_hits": 2,
+      "segment_total": 7,
+      "segment_acc": 28.57142857142857
+    },
+    {
+      "stem": "013",
+      "name": "Candidate_013",
+      "true_grade": "R",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 53,
+      "window_acc": 64.15094339622641,
+      "segment_hits": 8,
+      "segment_total": 10,
+      "segment_acc": 80.0
+    },
+    {
+      "stem": "014",
+      "name": "DrRnura",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 112,
+      "window_acc": 90.17857142857143,
+      "segment_hits": 13,
+      "segment_total": 13,
+      "segment_acc": 100.0
+    },
+    {
+      "stem": "015",
+      "name": "Vafsal",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 81,
+      "window_acc": 83.9506172839506,
+      "segment_hits": 10,
+      "segment_total": 13,
+      "segment_acc": 76.92307692307693
+    },
+    {
+      "stem": "016",
+      "name": "AshwaMudra",
+      "true_grade": "R",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 71,
+      "window_acc": 60.56338028169014,
+      "segment_hits": 7,
+      "segment_total": 11,
+      "segment_acc": 63.63636363636363
+    },
+    {
+      "stem": "017",
+      "name": "Virinchy",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 69,
+      "window_acc": 78.26086956521739,
+      "segment_hits": 8,
+      "segment_total": 13,
+      "segment_acc": 61.53846153846154
+    },
+    {
+      "stem": "018",
+      "name": "Candidate_018",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 67,
+      "window_acc": 46.26865671641791,
+      "segment_hits": 2,
+      "segment_total": 13,
+      "segment_acc": 15.384615384615385
+    },
+    {
+      "stem": "019",
+      "name": "Candidate_019",
+      "true_grade": "P-1",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 71,
+      "window_acc": 40.845070422535215,
+      "segment_hits": 2,
+      "segment_total": 13,
+      "segment_acc": 15.384615384615385
+    },
+    {
+      "stem": "020",
+      "name": "kan",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 106,
+      "window_acc": 95.28301886792453,
+      "segment_hits": 13,
+      "segment_total": 13,
+      "segment_acc": 100.0
+    },
+    {
+      "stem": "021",
+      "name": "VoiswwaWi",
+      "true_grade": "R",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 61,
+      "window_acc": 32.78688524590164,
+      "segment_hits": 3,
+      "segment_total": 11,
+      "segment_acc": 27.27272727272727
+    },
+    {
+      "stem": "022",
+      "name": "KA-+",
+      "true_grade": "P",
+      "pred_majority_grade": "P",
+      "grade_match": true,
+      "windows": 90,
+      "window_acc": 87.77777777777777,
+      "segment_hits": 10,
+      "segment_total": 13,
+      "segment_acc": 76.92307692307693
+    },
+    {
+      "stem": "023",
+      "name": "Candidate_023",
+      "true_grade": "R",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 67,
+      "window_acc": 11.940298507462686,
+      "segment_hits": 2,
+      "segment_total": 9,
+      "segment_acc": 22.22222222222222
+    },
+    {
+      "stem": "024",
+      "name": "Candidate_024",
+      "true_grade": "P-1",
+      "pred_majority_grade": "P",
+      "grade_match": false,
+      "windows": 64,
+      "window_acc": 43.75,
+      "segment_hits": 4,
+      "segment_total": 13,
+      "segment_acc": 30.76923076923077
+    }
+  ]
+}

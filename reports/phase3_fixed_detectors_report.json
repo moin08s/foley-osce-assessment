@@ -1,0 +1,119 @@
+{
+  "4": {
+    "name": "Sterile Glove Donning (Work Area)",
+    "threshold": {
+      "glove_cov": 0.02,
+      "min_motion": 0.01,
+      "label": "Sterile Glove Donning (Work Area)"
+    },
+    "neg_samples": 4,
+    "pos_samples": 19,
+    "TP": 19,
+    "FP": 4,
+    "TN": 0,
+    "FN": 0,
+    "sensitivity": 100.0,
+    "precision": 82.6,
+    "false_alarm_rate": 100.0,
+    "reliability": "Untested/Low (4 neg samples)",
+    "negative_scores": {
+      "012": {
+        "peak": 0.03316666558384895,
+        "detected": true,
+        "time": 0.48381665349006653
+      },
+      "013": {
+        "peak": 0.02979999966919422,
+        "detected": true,
+        "time": 0.9676333069801331
+      },
+      "016": {
+        "peak": 0.05963589623570442,
+        "detected": true,
+        "time": 0.48381665349006653
+      },
+      "023": {
+        "peak": 0.04181410372257233,
+        "detected": true,
+        "time": 0.48381665349006653
+      }
+    }
+  },
+  "6": {
+    "name": "Green Drape Placement (Work Area)",
+    "threshold": {
+      "drape_cov": 0.012,
+      "label": "Green Drape Placement (Work Area)"
+    },
+    "neg_samples": 2,
+    "pos_samples": 21,
+    "TP": 21,
+    "FP": 2,
+    "TN": 0,
+    "FN": 0,
+    "sensitivity": 100.0,
+    "precision": 91.3,
+    "false_alarm_rate": 100.0,
+    "reliability": "Untested/Low (2 neg samples)",
+    "negative_scores": {
+      "009": {
+        "peak": 0.014756410382688046,
+        "detected": true,
+        "time": 0.0
+      },
+      "012": {
+        "peak": 0.017575640231370926,
+        "detected": true,
+        "time": 0.0
+      }
+    }
+  },
+  "9": {
+    "name": "Yellow Fluid in Urobag (Work Area)",
+    "threshold": {
+      "urine_cov": 0.004,
+      "label": "Yellow Fluid in Urobag (Work Area)"
+    },
+    "neg_samples": 1,
+    "pos_samples": 22,
+    "TP": 22,
+    "FP": 1,
+    "TN": 0,
+    "FN": 0,
+    "sensitivity": 100.0,
+    "precision": 95.7,
+    "false_alarm_rate": 100.0,
+    "reliability": "Untested/Low (1 neg samples)",
+    "negative_scores": {
+      "012": {
+        "peak": 0.016792308539152145,
+        "detected": true,
+        "time": 31.931900024414062
+      }
+    }
+  },
+  "10": {
+    "name": "Procedural Motion at Balloon Port",
+    "threshold": {
+      "motion_spike": 0.03,
+      "label": "Procedural Motion at Balloon Port"
+    },
+    "neg_samples": 1,
+    "pos_samples": 22,
+    "TP": 22,
+    "FP": 1,
+    "TN": 0,
+    "FN": 0,
+    "sensitivity": 100.0,
+    "precision": 95.7,
+    "false_alarm_rate": 100.0,
+    "reliability": "Untested/Low (1 neg samples)",
+    "negative_scores": {
+      "012": {
+        "peak": 0.05219808220863342,
+        "detected": true,
+        "time": 35.3186149597168
+      }
+    }
+  }
+}
