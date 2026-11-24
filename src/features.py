@@ -354,3 +354,57 @@ def extract_window_features(
     v_feat = extract_video_features(video_frames)
     a_feat = extract_audio_features(audio_samples, sr=audio_sr)
     return np.concatenate([v_feat, a_feat]).astype(np.float32)
+
+
+def extract_clean_window_features(
+    video_frames: np.ndarray,
+    audio_samples: np.ndarray,
+    window_idx: int = 0,
+    total_windows: int = 1,
+    audio_sr: int = 16000,
+) -> np.ndarray:
+    """Extract de-biased multimodal features for a sliding window.
+    
+    Prunes the whole-frame 8x8 spatial summary and raw RGB histograms to eliminate
+    the 26x candidate identity confounding found in ANOVA tests.
+    
+    Dimensions (123 total):
+    - Video motion energy: 1
+    - Video 8x8 grid motion: 64
+    - Procedural clinical color fractions (drape, urine, catheter, glove): 4
+    - Audio log-mel filterbank: 40
+    - Audio short-time energy (STE): 3
+    - Audio spectral flux: 3
+    - Temporal harmonic progression (t_rel, sin/cos, pacing): 8
+    
+    Returns:
+        1D array of shape (123,), dtype=float32
+    """
+    from .temporal_features import compute_temporal_positional_features
+
+    # 1. Motion features
+    if len(video_frames) == 0:
+        motion_energy = np.zeros(1, dtype=np.float32)
+        grid_motion = np.zeros(64, dtype=np.float32)
+        clinical_colors = np.zeros(4, dtype=np.float32)
+    else:
+        frames_gray = (
+            0.299 * video_frames[..., 0] +
+            0.587 * video_frames[..., 1] +
+            0.114 * video_frames[..., 2]
+        ).astype(np.float32) / 255.0
+        motion_energy = np.array([compute_frame_difference_motion(frames_gray)], dtype=np.float32)
+        grid_motion = compute_grid_block_motion(frames_gray, grid_size=8)
+        
+        # Clinical colors only (4-D: green drape, yellow urine, orange catheter, white glove)
+        full_color = compute_color_histograms(video_frames)
+        clinical_colors = full_color[48:52]  # the 4 clinical fractions
+
+    # 2. Audio features (46-D)
+    a_feat = extract_audio_features(audio_samples, sr=audio_sr)
+
+    # 3. Temporal harmonic encodings (8-D)
+    t_feat = compute_temporal_positional_features(window_idx, total_windows)
+
+    return np.concatenate([motion_energy, grid_motion, clinical_colors, a_feat, t_feat]).astype(np.float32)
+
