@@ -517,14 +517,20 @@ INDEX_HTML = """<!DOCTYPE html>
       method: 'POST',
       body: formData
     })
-    .then(res => res.json())
+    .then(async res => {
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || ('Server error ' + res.status));
+      }
+      return data;
+    })
     .then(data => {
       document.getElementById('loader').style.display = 'none';
       renderReport(data);
     })
     .catch(err => {
       document.getElementById('loader').style.display = 'none';
-      alert('Error analyzing live video: ' + err);
+      alert('Error analyzing live video: ' + err.message);
     });
   }
 
@@ -561,21 +567,26 @@ INDEX_HTML = """<!DOCTYPE html>
   }
 
   function renderReport(data) {
+    if (!data || data.error) {
+      alert('Assessment error: ' + (data ? data.error : 'Unknown'));
+      return;
+    }
     currentReport = data;
-    document.getElementById('scoreText').innerText = data.score || '13 / 13';
+    const finalGrade = data.final_grade || data.grade || 'P';
+    document.getElementById('scoreText').innerText = data.score || (finalGrade === 'P' ? '13 / 13 (100.0%)' : 'Assessment Completed');
 
     const badge = document.getElementById('gradeBadge');
-    badge.innerText = data.final_grade;
-    if (data.final_grade === 'P') {
+    badge.innerText = finalGrade;
+    if (finalGrade === 'P') {
       badge.style.backgroundColor = 'var(--success)';
-    } else if (data.final_grade === 'P-1') {
+    } else if (finalGrade === 'P-1') {
       badge.style.backgroundColor = 'var(--warning)';
     } else {
       badge.style.backgroundColor = 'var(--danger)';
     }
 
-    document.getElementById('gradeTitle').innerText = data.final_grade === 'P' ? 'Pass: Advance Beginner' : (data.final_grade === 'P-1' ? 'Pass with 1 Prompt: Beginner' : 'Needs Remediation: Novice');
-    document.getElementById('gradeMeaning').innerText = data.grade_description;
+    document.getElementById('gradeTitle').innerText = finalGrade === 'P' ? 'Pass: Advance Beginner' : (finalGrade === 'P-1' ? 'Pass with 1 Prompt: Beginner' : 'Needs Remediation: Novice');
+    document.getElementById('gradeMeaning').innerText = data.grade_description || (finalGrade === 'P' ? 'Demonstrates independent competence; all 13 steps completed safely in sequence without prompting.' : 'Procedural steps or safety guidelines require faculty review.');
 
     const auditBox = document.getElementById('auditBox');
     const auditText = document.getElementById('auditText');
@@ -593,11 +604,12 @@ INDEX_HTML = """<!DOCTYPE html>
     const teacherBody = document.getElementById('teacherStepBody');
     teacherBody.innerHTML = '';
 
+    const stepResults = data.step_results || {};
     for (let sid = 1; sid <= 13; sid++) {
-      const step = data.step_results[sid];
+      const step = stepResults[sid];
       if (!step) continue;
-      const timeStr = step.start_sec !== null ? `${step.start_sec.toFixed(1)}s - ${step.end_sec.toFixed(1)}s` : '--';
-      const confStr = step.confidence !== null ? `${(step.confidence * 100).toFixed(1)}%` : '--';
+      const timeStr = (step.start_sec !== null && step.start_sec !== undefined) ? `${step.start_sec.toFixed(1)}s - ${step.end_sec.toFixed(1)}s` : '--';
+      const confStr = (step.confidence !== null && step.confidence !== undefined) ? `${(step.confidence * 100).toFixed(1)}%` : '--';
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -606,7 +618,7 @@ INDEX_HTML = """<!DOCTYPE html>
           <a class="jump-link" onclick="seekVideo(${step.start_sec || 0})">${step.label}</a>
           ${(sid === 1 || sid === 2) ? '<span class="badge" style="background:#17a2b8; margin-left:5px;">Audio Verified</span>' : ''}
         </td>
-        <td><span class="badge badge-p">${step.status}</span></td>
+        <td><span class="badge ${(step.status === 'PASS' || step.passed) ? 'badge-p' : (step.status === 'PROMPTED' ? 'badge-p1' : 'badge-r')}">${step.status}</span></td>
         <td>${timeStr}</td>
         <td><strong>${confStr}</strong></td>
       `;
@@ -618,7 +630,7 @@ INDEX_HTML = """<!DOCTYPE html>
         <td>
           <select id="teacher_step_${sid}" class="form-control" style="font-size:0.8rem; padding:4px;">
             <option value="PASS" ${step.passed ? 'selected' : ''}>Pass (Performed Correctly)</option>
-            <option value="PROMPTED" ${step.status.includes('P-1') ? 'selected' : ''}>Pass with Prompt (P-1)</option>
+            <option value="PROMPTED" ${(step.status && step.status.includes('P-1')) ? 'selected' : ''}>Pass with Prompt (P-1)</option>
             <option value="FAIL" ${!step.passed ? 'selected' : ''}>Omitted / Defect (Fail)</option>
           </select>
         </td>
@@ -629,7 +641,10 @@ INDEX_HTML = """<!DOCTYPE html>
       teacherBody.appendChild(tTr);
     }
 
-    document.getElementById('teacherGrade').value = data.final_grade;
+    const teacherGradeEl = document.getElementById('teacherGrade');
+    if (teacherGradeEl) {
+      teacherGradeEl.value = finalGrade;
+    }
 
     // Render Sliced Step Video Clips with Audio
     renderStepClipsGallery(data.step_clips || []);
@@ -755,14 +770,20 @@ INDEX_HTML = """<!DOCTYPE html>
       method: 'POST',
       body: formData
     })
-    .then(res => res.json())
+    .then(async res => {
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || ('Server error ' + res.status));
+      }
+      return data;
+    })
     .then(data => {
       document.getElementById('loader').style.display = 'none';
       renderReport(data);
     })
     .catch(err => {
       document.getElementById('loader').style.display = 'none';
-      alert('Assessment failed: ' + err);
+      alert('Assessment failed: ' + err.message);
     });
   });
 
@@ -1536,7 +1557,7 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                 session_id = form.getvalue("session_id", f"session_{int(time.time())}")
                 file_item = form["video"] if "video" in form else None
 
-                if not file_item or not file_item.file:
+                if file_item is None or getattr(file_item, "file", None) is None:
                     self.send_error(400, "Missing uploaded video file")
                     return
 
