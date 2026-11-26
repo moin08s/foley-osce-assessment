@@ -499,6 +499,38 @@ INDEX_HTML = """<!DOCTYPE html>
     }
   }
 
+  function showProcessingState(loadingMsg) {
+    const resultsCard = document.getElementById('resultsCard');
+    if (resultsCard) resultsCard.style.display = 'none';
+    const teacherCard = document.getElementById('teacherCard');
+    if (teacherCard) teacherCard.style.display = 'none';
+    const galleryCard = document.getElementById('galleryCard');
+    if (galleryCard) galleryCard.style.display = 'none';
+    const retrainAlert = document.getElementById('retrainAlert');
+    if (retrainAlert) retrainAlert.style.display = 'none';
+
+    const loader = document.getElementById('loader');
+    if (loader) {
+      if (loadingMsg) {
+        const pMsg = loader.querySelector('p');
+        if (pMsg) pMsg.innerText = loadingMsg;
+      }
+      loader.style.display = 'block';
+      loader.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function hideProcessingState() {
+    const loader = document.getElementById('loader');
+    if (loader) loader.style.display = 'none';
+    const resultsCard = document.getElementById('resultsCard');
+    if (resultsCard) resultsCard.style.display = 'block';
+    const teacherCard = document.getElementById('teacherCard');
+    if (teacherCard) teacherCard.style.display = 'block';
+    const galleryCard = document.getElementById('galleryCard');
+    if (galleryCard) galleryCard.style.display = 'block';
+  }
+
   function uploadLiveRecording() {
     const blob = new Blob(recordedChunks, { type: 'video/webm' });
     const formData = new FormData();
@@ -513,6 +545,8 @@ INDEX_HTML = """<!DOCTYPE html>
     document.getElementById('liveCamPreview').style.display = 'none';
     document.getElementById('playerTitle').innerText = 'Recorded Session Playback';
 
+    showProcessingState('Analyzing recorded live exam session...');
+
     fetch('/api/assess_live', {
       method: 'POST',
       body: formData
@@ -525,11 +559,10 @@ INDEX_HTML = """<!DOCTYPE html>
       return data;
     })
     .then(data => {
-      document.getElementById('loader').style.display = 'none';
       renderReport(data);
     })
     .catch(err => {
-      document.getElementById('loader').style.display = 'none';
+      hideProcessingState();
       alert('Error analyzing live video: ' + err.message);
     });
   }
@@ -567,6 +600,7 @@ INDEX_HTML = """<!DOCTYPE html>
   }
 
   function renderReport(data) {
+    hideProcessingState();
     if (!data || data.error) {
       alert('Assessment error: ' + (data ? data.error : 'Unknown'));
       return;
@@ -740,15 +774,14 @@ INDEX_HTML = """<!DOCTYPE html>
   }
 
   function runSampleAssessment() {
-    document.getElementById('loader').style.display = 'block';
+    showProcessingState('Loading initial benchmark assessment...');
     fetch('/api/sample')
       .then(res => res.json())
       .then(data => {
-        document.getElementById('loader').style.display = 'none';
         renderReport(data);
       })
       .catch(err => {
-        document.getElementById('loader').style.display = 'none';
+        hideProcessingState();
         alert('Error: ' + err);
       });
   }
@@ -760,12 +793,30 @@ INDEX_HTML = """<!DOCTYPE html>
       alert('Please select a video file (.mp4) first.');
       return;
     }
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = '⏳ Processing Video...';
+    }
+
+    // Immediately clear/hide old results
+    showProcessingState('Processing newly uploaded video & extracting multimodal features...');
+
+    // Preview newly uploaded video in player immediately
+    try {
+      const player = document.getElementById('player');
+      player.src = URL.createObjectURL(fileInput.files[0]);
+      player.style.display = 'block';
+      const livePreview = document.getElementById('liveCamPreview');
+      if (livePreview) livePreview.style.display = 'none';
+      document.getElementById('playerTitle').innerText = 'Uploaded Video Preview: ' + fileInput.files[0].name;
+    } catch(err) {}
+
     const formData = new FormData();
     formData.append('video', fileInput.files[0]);
     formData.append('student_id', document.getElementById('studentId').value);
     formData.append('session_id', document.getElementById('sessionId').value);
 
-    document.getElementById('loader').style.display = 'block';
     fetch('/api/assess', {
       method: 'POST',
       body: formData
@@ -778,11 +829,18 @@ INDEX_HTML = """<!DOCTYPE html>
       return data;
     })
     .then(data => {
-      document.getElementById('loader').style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '🚀 Assess Video Clip';
+      }
       renderReport(data);
     })
     .catch(err => {
-      document.getElementById('loader').style.display = 'none';
+      hideProcessingState();
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '🚀 Assess Video Clip';
+      }
       alert('Assessment failed: ' + err.message);
     });
   });
