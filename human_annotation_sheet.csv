@@ -1,17 +1,17 @@
 video,step_id,step_label,status,start_sec,end_sec,prompt_time_sec,prompt_step,annotator_name,notes
-001.MP4,1,introduce_explain,done,2.5,9.0,,,Annotator A,Introduced clearly to patient
-001.MP4,2,informed_consent,done,9.0,16.5,,,Annotator A,Obtained informed consent
-001.MP4,3,check_instruments,done,16.5,27.0,,,Annotator A,"Inspected tray, opened sterile packs"
-001.MP4,4,hand_hygiene_gloves,done,27.0,42.0,,,Annotator A,Hand hygiene and sterile gloves donning
-001.MP4,5,privacy_position_exposure,done,42.0,50.0,,,Annotator A,"Positioned mannequin, exposed genital area"
-001.MP4,6,painting_draping,done,50.0,72.0,,,Annotator A,"Painted with betadine swab, placed sterile drape"
-001.MP4,7,lignocaine_jelly,done,72.0,84.0,,,Annotator A,Instilled 2% lignocaine jelly into meatus
-001.MP4,8,open_catheter_insert,done,84.0,106.0,,,Annotator A,Catheter inserted into urethra until Y-junction
-001.MP4,9,attach_urobag_confirm_urine,done,106.0,118.0,,,Annotator A,"Urobag attached, yellow fluid return observed"
-001.MP4,10,inflate_balloon,done,118.0,130.0,,,Annotator A,Inflated retention balloon with 10ml aqua
-001.MP4,11,traction_until_resistance,done,130.0,138.0,,,Annotator A,Pulled back gently until resistance felt
-001.MP4,12,reposition_prepuce,done,138.0,146.0,,,Annotator A,Foreskin repositioned forward over glans
-001.MP4,13,tip_dressing,done,146.0,156.0,,,Annotator A,Dressing applied and catheter secured
+001.MP4,1,introduce_explain,done,2.5,9,,,Annotator A,Introduced clearly to patient
+001.MP4,2,informed_consent,done,9,16.5,,,Annotator A,Obtained informed consent
+001.MP4,3,check_instruments,done,16.5,27,,,Annotator A,"Inspected tray, opened sterile packs"
+001.MP4,4,hand_hygiene_gloves,done,27,42,,,Annotator A,Hand hygiene and sterile gloves donning
+001.MP4,5,privacy_position_exposure,done,42,50,,,Annotator A,"Positioned mannequin, exposed genital area"
+001.MP4,6,painting_draping,done,50,72,,,Annotator A,"Painted with betadine swab, placed sterile drape"
+001.MP4,7,lignocaine_jelly,done,72,84,,,Annotator A,Instilled 2% lignocaine jelly into meatus
+001.MP4,8,open_catheter_insert,done,84,106,,,Annotator A,Catheter inserted into urethra until Y-junction
+001.MP4,9,attach_urobag_confirm_urine,done,106,118,,,Annotator A,"Urobag attached, yellow fluid return observed"
+001.MP4,10,inflate_balloon,done,118,130,,,Annotator A,Inflated retention balloon with 10ml aqua
+001.MP4,11,traction_until_resistance,done,130,138,,,Annotator A,Pulled back gently until resistance felt
+001.MP4,12,reposition_prepuce,done,138,146,0,12,Annotator A,Foreskin repositioned forward over glans
+001.MP4,13,tip_dressing,done,146,156,,,Annotator A,Dressing applied and catheter secured
 002.MP4,1,introduce_explain,done,1.5,8.0,,,Annotator A,Introductory explanation given
 002.MP4,2,informed_consent,done,8.0,18.0,,,Annotator A,Informed consent obtained
 002.MP4,3,check_instruments,done,18.0,32.0,,,Annotator A,Checked catheter size and tray

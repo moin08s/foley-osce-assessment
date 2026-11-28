@@ -207,19 +207,19 @@ clip_025_s10,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,10,inf
 clip_025_s11,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,11,traction_until_resistance,186.0,196.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
 clip_025_s12,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,12,reposition_prepuce,194.0,204.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
 clip_025_s13,session_025,Candidate_025,cohort_eval,dataset/videos/025.mp4,13,tip_dressing,202.0,212.0,Y,none,N,N,D Y Patil Faculty Adjudicator,synthetic
-clip_001_s01,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,1,introduce_explain,2.5,9.0,Y,none,N,Y,Annotator A,human_annotated
-clip_001_s02,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,2,informed_consent,9.0,16.5,Y,none,N,Y,Annotator A,human_annotated
-clip_001_s03,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,3,check_instruments,16.5,27.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s04,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,4,hand_hygiene_gloves,27.0,42.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s05,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,5,privacy_position_exposure,42.0,50.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s06,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,6,painting_draping,50.0,72.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s07,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,7,lignocaine_jelly,72.0,84.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s08,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,8,open_catheter_insert,84.0,106.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s09,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,9,attach_urobag_confirm_urine,106.0,118.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s10,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,10,inflate_balloon,118.0,130.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s11,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,11,traction_until_resistance,130.0,138.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s12,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,12,reposition_prepuce,138.0,146.0,Y,none,N,N,Annotator A,human_annotated
-clip_001_s13,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,13,tip_dressing,146.0,156.0,Y,none,N,N,Annotator A,human_annotated
+clip_001_s01,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,1,introduce_explain,2.5,9,Y,none,N,Y,Annotator A,human_annotated
+clip_001_s02,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,2,informed_consent,9,16.5,Y,none,N,Y,Annotator A,human_annotated
+clip_001_s03,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,3,check_instruments,16.5,27,Y,none,N,N,Annotator A,human_annotated
+clip_001_s04,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,4,hand_hygiene_gloves,27,42,Y,none,N,N,Annotator A,human_annotated
+clip_001_s05,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,5,privacy_position_exposure,42,50,Y,none,N,N,Annotator A,human_annotated
+clip_001_s06,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,6,painting_draping,50,72,Y,none,N,N,Annotator A,human_annotated
+clip_001_s07,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,7,lignocaine_jelly,72,84,Y,none,N,N,Annotator A,human_annotated
+clip_001_s08,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,8,open_catheter_insert,84,106,Y,none,N,N,Annotator A,human_annotated
+clip_001_s09,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,9,attach_urobag_confirm_urine,106,118,Y,none,N,N,Annotator A,human_annotated
+clip_001_s10,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,10,inflate_balloon,118,130,Y,none,N,N,Annotator A,human_annotated
+clip_001_s11,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,11,traction_until_resistance,130,138,Y,none,N,N,Annotator A,human_annotated
+clip_001_s12,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,12,reposition_prepuce,138,146,Y,none,N,N,Annotator A,human_annotated
+clip_001_s13,session_001,KaiV,train,C:\New folder (2)\103NZ_30\001.MP4,13,tip_dressing,146,156,Y,none,N,N,Annotator A,human_annotated
 clip_002_s01,session_002,"yajw,",train,C:\New folder (2)\103NZ_30\002.MP4,1,introduce_explain,1.5,8.0,Y,none,N,Y,Annotator A,human_annotated
 clip_002_s02,session_002,"yajw,",train,C:\New folder (2)\103NZ_30\002.MP4,2,informed_consent,8.0,18.0,Y,none,N,Y,Annotator A,human_annotated
 clip_002_s03,session_002,"yajw,",train,C:\New folder (2)\103NZ_30\002.MP4,3,check_instruments,18.0,32.0,Y,none,N,N,Annotator A,human_annotated
