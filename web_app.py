@@ -64,6 +64,19 @@ MODEL_PATH = os.path.join(BASE_DIR, "models", "foley_osce_mlp.npz")
 UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
 
 COHORT_VIDEO_DIR = r"C:\New folder (2)\103NZ_30"
+COHORT_VIDEO_SEARCH_DIRS = [
+    r"C:\103NZ_30",
+    r"C:\New folder (2)\103NZ_30",
+    os.path.join(BASE_DIR, "dataset", "videos"),
+    os.path.join(BASE_DIR, "uploads"),
+]
+
+def find_cohort_video_path(filename: str):
+    for directory in COHORT_VIDEO_SEARCH_DIRS:
+        candidate = os.path.join(directory, filename)
+        if os.path.isfile(candidate):
+            return candidate
+    return None
 ANNOTATION_CSV_PATH = r"C:\Medical\human_annotation_sheet.csv"
 COHORT_MANIFEST_PATH = r"C:\Medical\foley_cohort_manifest.csv"
 COHORT_GT_PATH = r"C:\Medical\dataset\cohort_ground_truth.json"
@@ -947,6 +960,10 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
         <label for="videoSelect">Candidate Video:</label>
         <select id="videoSelect" class="form-control" style="width: 280px;" onchange="changeVideo()"></select>
       </div>
+      <div class="form-group">
+        <label for="localVideoPicker">📂 Load Local Video File:</label>
+        <input type="file" id="localVideoPicker" accept="video/mp4,video/*" class="form-control" style="width: 210px; font-size: 0.8rem; padding: 4px;" onchange="loadLocalVideoFile(event)">
+      </div>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
       <div id="saveIndicator" class="save-indicator">Ready</div>
@@ -959,6 +976,13 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
   <div class="layout-grid">
     <!-- Left Column: Sticky Video & HUD -->
     <div class="video-panel">
+      <div id="videoMissingAlert" style="display: none; background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 10px 14px; border-radius: 6px; margin-bottom: 10px; font-size: 0.82rem; line-height: 1.4;">
+        <strong>⚠️ Video File Not Found on Server (404):</strong><br>
+        The server could not find <code><span id="missingVideoName"></span></code> on disk because recorded files were deleted.
+        <br>Because no video stream is loaded, the player cannot play or jump to timestamps.
+        <br><br>
+        👉 <strong>Solution:</strong> Click <strong>"📂 Load Local Video File"</strong> above to load the video directly from your computer, or place the MP4 file in <code>C:\103NZ_30</code>.
+      </div>
       <video id="videoPlayer" controls preload="metadata"></video>
       <div class="time-hud">
         <div class="time-display" id="timeDisplay">00:00.0</div>
@@ -1094,7 +1118,36 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
     }
   }
 
+  function loadLocalVideoFile(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    videoPlayer.src = url;
+    videoPlayer.load();
+    videoPlayer.play();
+    const alertBox = document.getElementById("videoMissingAlert");
+    if (alertBox) alertBox.style.display = "none";
+    showToast("Loaded local video: " + file.name);
+  }
+
+  videoPlayer.onerror = function() {
+    const alertBox = document.getElementById("videoMissingAlert");
+    if (alertBox) {
+      const nameSpan = document.getElementById("missingVideoName");
+      if (nameSpan) nameSpan.innerText = currentVideoFilename;
+      alertBox.style.display = "block";
+    }
+  };
+
+  videoPlayer.onloadeddata = function() {
+    const alertBox = document.getElementById("videoMissingAlert");
+    if (alertBox) alertBox.style.display = "none";
+  };
+
   async function changeVideo() {
+    const alertBox = document.getElementById("videoMissingAlert");
+    if (alertBox) alertBox.style.display = "none";
+
     let opt = videoSelect.options[videoSelect.selectedIndex];
     if (!opt) return;
     currentVideoFilename = opt.value;
@@ -1218,7 +1271,12 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
   function handleStartClick(sid) {
     let ann = stepAnnotations[sid];
     if (ann.start_sec !== null) {
+      if (isNaN(videoPlayer.duration) || videoPlayer.readyState === 0 || videoPlayer.error) {
+        alert(`Cannot jump to ${formatTime(ann.start_sec)}: No video stream is loaded in the player.\n\nSince the recorded video files were deleted from the server, please click '📂 Load Local Video File' in the top bar to select the video file from your computer.`);
+        return;
+      }
       videoPlayer.currentTime = ann.start_sec;
+      videoPlayer.play();
       showToast(`Jumped to Step ${sid} start (${formatTime(ann.start_sec)})`);
     } else {
       markStepStart(sid);
@@ -1546,11 +1604,11 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
 
         elif path.startswith("/video/cohort/"):
             filename = urllib.parse.unquote(path.replace("/video/cohort/", "").strip())
-            file_path = os.path.join(COHORT_VIDEO_DIR, filename)
-            if os.path.isfile(file_path):
+            file_path = find_cohort_video_path(filename)
+            if file_path and os.path.isfile(file_path):
                 self.serve_video_file(file_path)
             else:
-                self.send_error(404, f"Cohort video file '{filename}' not found")
+                self.send_error(404, f"Cohort video file '{filename}' not found in video folders.")
 
         elif path.startswith("/api/get_annotations"):
             try:
