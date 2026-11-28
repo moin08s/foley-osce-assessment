@@ -24,11 +24,12 @@ from src.data_loader import (
     load_wav_audio,
     slice_windows,
 )
-from src.features import compute_short_time_energy, extract_window_features
+from src.features import compute_short_time_energy, extract_clean_window_features, extract_window_features
 from src.grading import OSCEGrader
 from src.model import FoleyStepClassifier
 from src.session_checker import SessionChecker
 from src.video_slicer import slice_session_steps
+from viterbi_decoder import viterbi_procedural_decode
 
 
 def extract_audio_from_video(video_path: str, output_wav_path: str) -> None:
@@ -90,20 +91,32 @@ def evaluate_video(
         if len(windows) == 0:
             raise ValueError("Video duration is too short for sliding window assessment.")
 
-        # 3. Extract fused features
+        # 3. Extract fused de-biased features (123-D) with temporal progression
+        N_win = len(windows)
         feats = []
-        for w in windows:
-            f = extract_window_features(w["video"], w["audio"], audio_sr=sr)
+        for i, w in enumerate(windows):
+            f = extract_clean_window_features(
+                w["video"], w["audio"], window_idx=i, total_windows=N_win, audio_sr=sr
+            )
             feats.append(f)
         X = np.array(feats, dtype=np.float32)
 
+        # Per-video normalization on motion (0:65) and audio (69:115)
+        m = X[:, 0:65]
+        m_norm = (m - m.mean(axis=0, keepdims=True)) / (m.std(axis=0, keepdims=True) + 1e-6)
+        c = X[:, 65:69]
+        a = X[:, 69:115]
+        a_norm = (a - a.mean(axis=0, keepdims=True)) / (a.std(axis=0, keepdims=True) + 1e-6)
+        t = X[:, 115:123]
+        X_norm = np.hstack([m_norm, c, a_norm, t]).astype(np.float32)
+
         # 4. Predict probabilities with trained model
         model = FoleyStepClassifier.load(model_path)
-        probs = model.predict_proba(X)
+        probs, _ = model.forward(X_norm)
 
-        # 5. Temporal smoothing and segment extraction
+        # 5. Temporal smoothing with forward Viterbi decoder and segment extraction
         checker = SessionChecker()
-        smoothed_preds = checker.smooth_predictions(probs)
+        smoothed_preds = viterbi_procedural_decode(probs, min_duration_windows=2)
         detected_segments = checker.extract_segments(smoothed_preds, windows, window_probs=probs)
 
         # 6. Audio speech activity per step (for steps 1 & 2 verification)
