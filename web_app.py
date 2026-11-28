@@ -1216,23 +1216,27 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
       }
 
       // 4. Populate stepAnnotations with newly sliced step boundaries
-      if (data && data.step_status) {
-        for (let sid in data.step_status) {
-          let s = data.step_status[sid];
-          let numId = parseInt(sid);
-          if (stepAnnotations[numId]) {
-            if (s.start_sec !== null && s.start_sec !== undefined && !isNaN(s.start_sec)) {
-              stepAnnotations[numId].start_sec = parseFloat(s.start_sec);
-            }
-            if (s.end_sec !== null && s.end_sec !== undefined && !isNaN(s.end_sec)) {
-              stepAnnotations[numId].end_sec = parseFloat(s.end_sec);
-            }
-            stepAnnotations[numId].status = s.passed ? "done" : (s.status === "OMITTED" ? "missed" : "done");
-            let confStr = (s.confidence !== null && s.confidence !== undefined) ? ` [AI Conf: ${(s.confidence * 100).toFixed(0)}%]` : "";
-            stepAnnotations[numId].notes = `AI Sliced: ${s.status || 'Detected'}${confStr}`;
+      const stepMap = (data && (data.step_results || data.step_status)) || {};
+      let mappedCount = 0;
+      for (let sid in stepMap) {
+        let s = stepMap[sid];
+        let numId = parseInt(sid);
+        if (stepAnnotations[numId]) {
+          mappedCount++;
+          if (s.start_sec !== null && s.start_sec !== undefined && !isNaN(s.start_sec)) {
+            stepAnnotations[numId].start_sec = parseFloat(s.start_sec);
           }
+          if (s.end_sec !== null && s.end_sec !== undefined && !isNaN(s.end_sec)) {
+            stepAnnotations[numId].end_sec = parseFloat(s.end_sec);
+          }
+          let isMissed = (s.status === "OMITTED" || s.passed === false);
+          stepAnnotations[numId].status = isMissed ? "missed" : "done";
+          let confStr = (s.confidence !== null && s.confidence !== undefined) ? ` [AI Conf: ${(s.confidence * 100).toFixed(0)}%]` : "";
+          stepAnnotations[numId].notes = `AI Sliced: ${s.status || 'Detected'}${confStr}`;
         }
-        showToast("✅ AI Slicing Complete! 13 Steps Mapped.");
+      }
+      if (mappedCount > 0) {
+        showToast(`✅ AI Slicing Complete: ${mappedCount} Steps Mapped!`);
       } else {
         showToast("Video loaded (manual slicing mode)");
       }
@@ -1563,9 +1567,11 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
         updateSaveIndicator(`Saved at ${timeStr}`, true);
         if (manual) showToast(`✔ Saved annotations for ${currentVideoFilename}!`);
 
-        // Display comparison with faculty sheet
+        // Display comparison with faculty sheet only if available for cohort candidate
         if (result.comparison) {
           renderComparison(result.comparison);
+        } else {
+          comparisonBox.style.display = "none";
         }
       } else {
         updateSaveIndicator("Save error", false);
@@ -1944,30 +1950,31 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                         m_writer.writeheader()
                         m_writer.writerows(m_rows)
 
-                # 4. Compare with Faculty Sheet (Task 3)
-                faculty_missed_steps = []
+                # 4. Compare with Faculty Sheet only for recognized cohort candidates
+                comparison = None
                 if os.path.isfile(COHORT_GT_PATH):
                     with open(COHORT_GT_PATH, "r", encoding="utf-8") as f:
                         cohort_gt = json.load(f)
-                    cand_gt = cohort_gt.get(stem, {})
-                    faculty_missed_steps = cand_gt.get("missing_steps", [])
+                    if stem in cohort_gt:
+                        cand_gt = cohort_gt[stem]
+                        faculty_missed_steps = cand_gt.get("missing_steps", [])
 
-                annotator_missed_set = set(annotator_missed_steps)
-                faculty_missed_set = set(faculty_missed_steps)
+                        annotator_missed_set = set(annotator_missed_steps)
+                        faculty_missed_set = set(faculty_missed_steps)
 
-                is_exact_match = (annotator_missed_set == faculty_missed_set)
-                mismatch_ann_only = sorted(list(annotator_missed_set - faculty_missed_set))
-                mismatch_fac_only = sorted(list(faculty_missed_set - annotator_missed_set))
+                        is_exact_match = (annotator_missed_set == faculty_missed_set)
+                        mismatch_ann_only = sorted(list(annotator_missed_set - faculty_missed_set))
+                        mismatch_fac_only = sorted(list(faculty_missed_set - annotator_missed_set))
 
-                comparison = {
-                    "video": target_video,
-                    "stem": stem,
-                    "annotator_missed": sorted(list(annotator_missed_set)),
-                    "faculty_missed": sorted(list(faculty_missed_set)),
-                    "is_exact_match": is_exact_match,
-                    "mismatch_annotator_only": mismatch_ann_only,
-                    "mismatch_faculty_only": mismatch_fac_only
-                }
+                        comparison = {
+                            "video": target_video,
+                            "stem": stem,
+                            "annotator_missed": sorted(list(annotator_missed_set)),
+                            "faculty_missed": sorted(list(faculty_missed_set)),
+                            "is_exact_match": is_exact_match,
+                            "mismatch_annotator_only": mismatch_ann_only,
+                            "mismatch_faculty_only": mismatch_fac_only
+                        }
 
                 res = {
                     "status": "ok",
