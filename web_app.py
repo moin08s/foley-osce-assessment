@@ -937,6 +937,11 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
     .comparison-panel { margin-top: 15px; padding: 14px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem; }
     .comparison-title { font-weight: 700; color: #0f172a; margin-bottom: 8px; display: flex; justify-content: space-between; }
     .toast { position: fixed; bottom: 25px; right: 25px; background: #0f172a; color: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 10000; font-weight: 600; font-size: 0.88rem; display: none; }
+    .processing-overlay { background: #f0f9ff; border: 2px dashed #0284c7; border-radius: 8px; padding: 36px 20px; text-align: center; margin-top: 10px; }
+    .spinner { width: 42px; height: 42px; border: 4px solid #bae6fd; border-top: 4px solid #0284c7; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 14px auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .processing-title { font-size: 1.05rem; font-weight: 700; color: #0369a1; margin-bottom: 6px; }
+    .processing-sub { font-size: 0.84rem; color: #64748b; max-width: 480px; margin: 0 auto; line-height: 1.45; }
   </style>
 </head>
 <body>
@@ -1029,6 +1034,15 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
           <span style="font-size: 0.8rem; color: #64748b;">Changes autosave after every click. Pressing a recorded time seeks video.</span>
         </div>
       </div>
+
+      <div id="annotateProcessingBox" class="processing-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <div class="processing-title">⏳ AI Auto-Slicing & Step Detection in Progress...</div>
+        <div class="processing-sub" id="annotateProcessingMsg">
+          Analyzing newly uploaded video with multimodal 123-D spatial/motion features and computing optimal step boundaries...
+        </div>
+      </div>
+
       <div id="stepCardsList"></div>
     </div>
   </div>
@@ -1118,16 +1132,120 @@ ANNOTATE_HTML = r'''<!DOCTYPE html>
     }
   }
 
-  function loadLocalVideoFile(event) {
+  let currentLocalFile = null;
+
+  async function loadLocalVideoFile(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
+    currentLocalFile = file;
+
+    // Immediately preview local video in video player
     const url = URL.createObjectURL(file);
     videoPlayer.src = url;
     videoPlayer.load();
     videoPlayer.play();
     const alertBox = document.getElementById("videoMissingAlert");
     if (alertBox) alertBox.style.display = "none";
-    showToast("Loaded local video: " + file.name);
+
+    currentVideoFilename = file.name;
+    currentVideoStem = file.name.replace(/\.[^/.]+$/, "");
+
+    // Update video selector dropdown
+    let found = false;
+    for (let i = 0; i < videoSelect.options.length; i++) {
+      if (videoSelect.options[i].value === file.name) {
+        videoSelect.selectedIndex = i;
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      let opt = document.createElement("option");
+      opt.value = file.name;
+      opt.dataset.stem = currentVideoStem;
+      opt.textContent = `📁 ${file.name} (Uploaded Local Video)`;
+      videoSelect.prepend(opt);
+      videoSelect.selectedIndex = 0;
+    }
+
+    // 1. Immediately wipe previous or default candidate times
+    stepAnnotations = {};
+    STEP_DEFINITIONS.forEach(def => {
+      stepAnnotations[def.id] = {
+        id: def.id,
+        label: def.label,
+        name: def.name,
+        status: "",
+        start_sec: null,
+        end_sec: null,
+        prompt_time_sec: "",
+        prompt_step: "",
+        notes: ""
+      };
+    });
+    renderStepCards();
+    comparisonBox.style.display = "none";
+
+    // 2. Enter Processing Phase with animated spinner
+    const procBox = document.getElementById("annotateProcessingBox");
+    if (procBox) procBox.style.display = "block";
+    stepCardsList.style.display = "none";
+    updateSaveIndicator("⏳ AI Slicing...");
+    showToast("Processing video: AI Slicing in progress...");
+
+    // 3. Post video to backend assessment pipeline for multi-step slicing
+    try {
+      const formData = new FormData();
+      formData.append("video", file);
+      formData.append("student_id", currentVideoStem);
+      formData.append("session_id", "annotate_" + Date.now());
+
+      let res = await fetch("/api/assess", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!res.ok) {
+        let errText = await res.text();
+        throw new Error(errText || "Backend returned status " + res.status);
+      }
+
+      let data = await res.json();
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
+
+      // 4. Populate stepAnnotations with newly sliced step boundaries
+      if (data && data.step_status) {
+        for (let sid in data.step_status) {
+          let s = data.step_status[sid];
+          let numId = parseInt(sid);
+          if (stepAnnotations[numId]) {
+            if (s.start_sec !== null && s.start_sec !== undefined && !isNaN(s.start_sec)) {
+              stepAnnotations[numId].start_sec = parseFloat(s.start_sec);
+            }
+            if (s.end_sec !== null && s.end_sec !== undefined && !isNaN(s.end_sec)) {
+              stepAnnotations[numId].end_sec = parseFloat(s.end_sec);
+            }
+            stepAnnotations[numId].status = s.passed ? "done" : (s.status === "OMITTED" ? "missed" : "done");
+            let confStr = (s.confidence !== null && s.confidence !== undefined) ? ` [AI Conf: ${(s.confidence * 100).toFixed(0)}%]` : "";
+            stepAnnotations[numId].notes = `AI Sliced: ${s.status || 'Detected'}${confStr}`;
+          }
+        }
+        showToast("✅ AI Slicing Complete! 13 Steps Mapped.");
+      } else {
+        showToast("Video loaded (manual slicing mode)");
+      }
+    } catch (err) {
+      console.warn("AI Auto-slicing note:", err);
+      showToast("Auto-slicing notice: Manual marking mode enabled", false);
+    } finally {
+      if (procBox) procBox.style.display = "none";
+      stepCardsList.style.display = "block";
+      updateSaveIndicator("Ready");
+      renderStepCards();
+      triggerAutosave();
+    }
   }
 
   videoPlayer.onerror = function() {
@@ -1739,6 +1857,22 @@ class OSCEWebHandler(http.server.BaseHTTPRequestHandler):
                     with open(ANNOTATION_CSV_PATH, "r", encoding="utf-8") as f:
                         reader = csv.DictReader(f)
                         all_sheet_rows = list(reader)
+
+                has_target = any(r.get("video", "").lower() == target_video.lower() for r in all_sheet_rows)
+                if not has_target and target_video:
+                    for s in range(1, 14):
+                        all_sheet_rows.append({
+                            "video": target_video,
+                            "step_id": str(s),
+                            "step_label": STEP_LABELS.get(s, f"step_{s}"),
+                            "status": "",
+                            "start_sec": "",
+                            "end_sec": "",
+                            "prompt_time_sec": "",
+                            "prompt_step": "",
+                            "annotator_name": annotator,
+                            "notes": ""
+                        })
 
                 annotator_missed_steps = []
                 for r in all_sheet_rows:
